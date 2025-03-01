@@ -1,0 +1,65 @@
+signalviz/
+├── backend/                  # Backend (Python/Flask)
+│   ├── app.py                # Main Flask application
+│   ├── requirements.txt      # Python dependencies
+│   ├── signals/              # Signal processing logic
+│   │   ├── __init__.py
+│   │   ├── rect.py           # Rectangular pulse function
+│   │   ├── tri.py            # Triangular pulse function
+│   │   ├── step.py           # Step function
+│   │   └── utils.py          # Utility functions (e.g., signal generation)
+│   └── tests/                # Unit tests for backend
+│       ├── __init__.py
+│       └── test_signals.py   # Test cases for signal functions
+│
+├── frontend/                 # Frontend (Angular)
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/   # Angular components
+│   │   │   │   ├── course/   # Course section components
+│   │   │   │   │   ├── course.component.ts
+│   │   │   │   │   ├── course.component.html
+│   │   │   │   │   └── course.component.css
+│   │   │   │   ├── quiz/     # Quiz section components
+│   │   │   │   │   ├── quiz.component.ts
+│   │   │   │   │   ├── quiz.component.html
+│   │   │   │   │   └── quiz.component.css
+│   │   │   │   ├── signal-graph/ # Signal visualization component
+│   │   │   │   │   ├── signal-graph.component.ts
+│   │   │   │   │   ├── signal-graph.component.html
+│   │   │   │   │   └── signal-graph.component.css
+│   │   │   │   └── shared/   # Shared components (e.g., navbar, footer)
+│   │   │   │       ├── navbar/
+│   │   │   │       └── footer/
+│   │   │   ├── services/     # Angular services
+│   │   │   │   ├── api.service.ts # Service for backend API calls
+│   │   │   │   └── quiz.service.ts # Service for quiz logic
+│   │   │   ├── models/       # Data models
+│   │   │   │   ├── signal.model.ts
+│   │   │   │   └── quiz.model.ts
+│   │   │   ├── app-routing.module.ts # Routing configuration
+│   │   │   ├── app.component.ts     # Root component
+│   │   │   ├── app.component.html
+│   │   │   └── app.component.css
+│   │   ├── assets/           # Static assets (images, fonts, etc.)
+│   │   ├── environments/     # Environment configurations
+│   │   │   ├── environment.ts
+│   │   │   └── environment.prod.ts
+│   │   └── styles.css        # Global styles
+│   ├── angular.json          # Angular configuration
+│   ├── package.json          # Frontend dependencies
+│   ├── tsconfig.json         # TypeScript configuration
+│   └── README.md             # Frontend README
+│
+├── docs/                     # Project documentation
+│   ├── design.md             # Design decisions and architecture
+│   ├── api.md                # API documentation
+│   └── user-guide.md         # User guide for the app
+│
+├── scripts/                  # Utility scripts
+│   ├── start-backend.sh      # Script to start the Flask backend
+│   └── start-frontend.sh     # Script to start the Angular frontend
+│
+├── .gitignore                # Git ignore file
+├── LICENSE                   # Project license (e.g., MIT)
+└── README.md                 # Main project README

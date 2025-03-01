@@ -1,0 +1,10 @@
+
+  <div>
+    <h2>Signal Graph</h2>
+    <div *ngIf="chart">
+      <div [chart]="chart"></div>
+    </div>
+    <div *ngIf="!chart">
+      <div [chart]="chart"> is loading ...</div>
+    </div>
+  </div>
