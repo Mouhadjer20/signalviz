@@ -1,14 +1,14 @@
 <div appearance="outlined">
 <mat-card class="example-card">
   <mat-card-header>
-    <mat-card-title><!--{"{ energy }"}--><strong>Function</strong> 'X1(t)'</mat-card-title>
-    <mat-card-subtitle><!--{"{ energy }"}--><strong>Equation: </strong>'Rect(t - 2) + Tri(t)'</mat-card-subtitle>
+    <mat-card-title><strong>Function</strong> '{{signalData.id}}'</mat-card-title>
+    <mat-card-subtitle><strong>Equation: </strong>'{{signalData.equation}}'</mat-card-subtitle>
   </mat-card-header>
-  <app-signal-graph signalName="x13" [timeData]="['0', '1', '2', '3', '4', '5']" [amplitudeData]="[0, 1, 0.5, -0.5, -1, 0]"></app-signal-graph>
+  <app-signal-graph [timeData]="signalData.time" [amplitudeData]="signalData.amplitude"></app-signal-graph>
   <mat-card-content>
     <ul>
-      <li><p><strong>Energy: </strong><!--{"{ energy }"}--></p></li>
-      <li><p><strong>Derivative: </strong> <!--{"{ derivative }"}--></p></li>
+      <li><p><strong>Energy: </strong>{{signalData.energy}}</p></li>
+      <li><p><strong>Derivative: </strong> {{signalData.derivative}}</p></li>
     </ul>
   </mat-card-content>
 </mat-card>

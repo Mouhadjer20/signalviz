@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Chart, ChartModule } from 'angular-highcharts';
 import { CommonModule } from '@angular/common';
 
@@ -12,11 +11,10 @@ import { CommonModule } from '@angular/common';
 })
 export class SignalGraphComponent implements OnInit {
   chart?: Chart;
-  @Input() timeData: string[] = ['0', '1', '2', '3', '4', '5'];
+  @Input() timeData: number[] = [0, 1, 2, 3, 4, 5];
   @Input() amplitudeData: number[] = [0, 1, 0.5, -0.5, -1, 0];
 
-  constructor(private http: HttpClient) {
-}
+  constructor() {}
 
   ngOnInit() {
     this.createChart();
@@ -30,21 +28,29 @@ export class SignalGraphComponent implements OnInit {
     this.chart = new Chart({
       chart: {
         type: 'line',
+        height: 250, // Set fixed height
+        width: 260, // Set fixed width
+      },
+      title: {
+        text: ''
       },
       xAxis: {
         title: { text: 'Time (t)' },
-        categories: this.timeData,
+        categories: this.timeData.map(String),
       },
       yAxis: {
         title: { text: 'Amplitude' },
       },
       series: [
         {
-          name: 'Signal',
+          name: '',
           data: this.amplitudeData,
           type: 'line',
         },
       ],
+      legend: {
+        enabled: false, // ❌ Remove the legend
+      },
       tooltip: { valueDecimals: 2 },
       credits: { enabled: false },
     });

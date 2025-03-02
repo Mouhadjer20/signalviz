@@ -1,31 +1,29 @@
-
-  .card {
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    position: relative;
-  }
-  
-  .card.flipped {
-    transform: rotateY(180deg);
-  }
-  
-  .card-front,
-  .card-back {
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  
-  .card-back {
-    transform: rotateY(180deg);
-  }
-  
-  .example-card {
-  max-width: 400px;
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
+.example-card {
+  width: 300px;  /* Set a smaller width */
+  min-height: 300px; /* Minimum height */
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+mat-card-title, mat-card-subtitle {
+  font-size: 14px; /* Reduce text size */
+  line-height: 1.2;
+}
+
+mat-card-content ul {
+  padding-left: 0;
+  list-style: none;
+  font-size: 12px; /* Reduce font size */
+}
+
+app-signal-graph {
+  height: 260px; /* Adjust graph size */
 }

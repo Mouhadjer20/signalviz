@@ -2,6 +2,8 @@
     <h1>Some Functions helps in your study</h1>
     <br>
     <div class="cards">
-        <app-signal-card></app-signal-card>
+        @for (signal of signals; track $index) {
+            <app-signal-card [signalData]="signal"></app-signal-card>
+        }
     </div>
 </main>

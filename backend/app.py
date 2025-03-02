@@ -23,51 +23,51 @@ def delta(t, t0, amplitude=1):
 
 # Définition des signaux spécifiques
 def x1(t):
-    """x1(t) = 2 * rect(2 * t - 1)."""
+    """2 * Rect(2 * t - 1)."""
     return 2 * rect(2 * t - 1)
 
 def x2(t):
-    """x2(t) = sin(pi * t) * rect(t / 2)."""
+    """sin(pi * t) * Rect(t / 2)."""
     return np.sin(np.pi * t) * rect(t / 2)
 
 def x3(t):
-    """x3(t) = tri(2 * t)."""
+    """Tri(2 * t)."""
     return tri(2 * t)
 
 def x4(t):
-    """x4(t) = u(t - 2)."""
+    """U(t - 2)."""
     return u(t - 2)
 
 def x5(t):
-    """x5(t) = u(3 - t)."""
+    """U(3 - t)."""
     return u(3 - t)
 
 def x6(t):
-    """x6(t) = 2δ(t + 1) - δ(t - 2) + δ(t) - 2δ(t - 1)."""
+    """2δ(t + 1) - δ(t - 2) + δ(t) - 2δ(t - 1)."""
     return 2 * delta(t, -1) - delta(t, 2) + delta(t, 0) - 2 * delta(t, 1)
 
 def x7(t):
-    """x7(t) = rect((t - 1) / 2) - rect((t + 1) / 2)."""
+    """Rect((t - 1) / 2) - Rect((t + 1) / 2)."""
     return rect((t - 1) / 2) - rect((t + 1) / 2)
 
 def x8(t):
-    """x8(t) = tri(t - 1) - tri(t + 1)."""
+    """Tri(t - 1) - Tri(t + 1)."""
     return tri(t - 1) - tri(t + 1)
 
 def x9(t):
-    """x9(t) = rect(t / 2) - tri(t)."""
+    """Rect(t / 2) - Tri(t)."""
     return rect(t / 2) - tri(t)
 
 def x10(t):
-    """x10(t) = exp(-t) * u(t - 1)."""
+    """exp(-t) * U(t - 1)."""
     return np.exp(-t) * u(t - 1)
 
 def x11(t):
-    """x11(t) = sin(4πt)."""
+    """sin(4πt)."""
     return np.sin(4 * np.pi * t)
 
 def x13(t):
-    """x13(t) = rect(t + 1) - 2 * rect(t) + rect(t - 1)."""
+    """r(t + 1) - 2 * r(t) + r(t - 1)."""
     return rect(t + 1) - 2 * rect(t) + rect(t - 1)
 
 def dirac(x, t):
@@ -93,10 +93,11 @@ def get_signal_data(signal, t=np.linspace(-5, 5, 1000)):
     resampled_amplitude = y[indices]
 
     return {
-        "function": docstring,  # Include the docstring in the response
+        "id": signal.__name__ + "(t)",
+        "equation": docstring,  # Include the docstring in the response
         "time": resampled_t.tolist(),  # Resampled time array
         "amplitude": resampled_amplitude.tolist(),  # Resampled amplitude array
-        "energie": energie,  # Include the energy in the response
+        "energy": energie,  # Include the energy in the response
     }
 
 signal_functions = {
@@ -118,9 +119,9 @@ def get_signal_data_by_name(signal_name):
 @app.route("/api/get-signal-data", methods=["GET"])
 @cross_origin()
 def get_all_signal_data():
-    response = {}
+    response = []
     for signal_name in signal_functions:
-        response.update({signal_name: get_signal_data(signal_functions[signal_name])})
+        response.append(get_signal_data(signal_functions[signal_name]))
 
     return jsonify(response)
 

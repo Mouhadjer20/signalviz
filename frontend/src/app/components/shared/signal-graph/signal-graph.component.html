@@ -1,9 +1,11 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3" *ngIf="chart">
-    <div [chart]="chart"></div>
+<div class="container mt-2">
+  <div class="d-flex justify-content-center" *ngIf="chart">
+    <div id="chart-container">
+      <div [chart]="chart"></div>
+    </div>
   </div>
 
-  <div *ngIf="!chart" id="chart-container" class="border rounded p-3 shadow-lg">
+  <div *ngIf="!chart" id="chart-container" class="border rounded p-2 shadow-sm">
     <p class="text-center text-muted">
       <i class="fas fa-spinner fa-spin"></i> Loading Chart...
     </p>
