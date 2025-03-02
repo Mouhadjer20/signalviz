@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import cross_origin  # Import cross_origin decorator
 import numpy as np
 
@@ -84,8 +84,8 @@ def dirac(x, t):
 def get_signal_data(signal, t=np.linspace(-5, 5, 1000)):
     """Return time and amplitude data as JSON."""
     y = signal(t)
-    docstring = signal.__doc__  # Extract the docstring
-    energie = dirac(y, t)  # Calculate Dirac energy
+    docstring = signal.__doc__
+    energie = dirac(y, t)
 
     # Resample time and amplitude arrays
     resampled_t = np.arange(-5, 5.5, 0.5 )  # [-5, -4.5, -4, ..., 5]
@@ -99,11 +99,20 @@ def get_signal_data(signal, t=np.linspace(-5, 5, 1000)):
         "energie": energie,  # Include the energy in the response
     }
 
+signal_functions = {
+    "x1": x1, "x2": x2, "x3": x3, "x4": x4,
+    "x5": x5, "x6": x6, "x7": x7, "x8": x8,
+    "x9": x9, "x10": x10, "x11": x11, "x13": x13
+}
+
 # Flask route to serve signal data
-@app.route("/api/get-signal-data", methods=["GET"])
+@app.route("/api/get-signal-data/<signal_name>", methods=["GET"])
 @cross_origin()  # Enable CORS for this route
-def signal_data():
-    return jsonify(get_signal_data(x1))
+def signal_data(signal_name):
+    if signal_name in signal_functions:
+        return jsonify(get_signal_data(signal_functions[signal_name]))
+    else:
+        return jsonify({"error": "Invalid signal name"}), 400
 
 # Run the Flask app
 if __name__ == "__main__":

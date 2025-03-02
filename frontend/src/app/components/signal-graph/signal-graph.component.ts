@@ -11,33 +11,42 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./signal-graph.component.css'],
 })
 export class SignalGraphComponent implements OnInit {
-  @Input() signalData: { equation: string; time: number[]; amplitude: number[]; energie: number; } | undefined; // Input from parent component
-  chart: Chart | undefined; // Change to `undefined` instead of `null`
+  @Input() signalName: string = 'x1'; // Default signal if not provided
+  @Input() signalData?: { equation: string; time: number[]; amplitude: number[]; energie: number; };
+  chart?: Chart;
 
-  constructor(private http: HttpClient) {} // Inject HttpClient here
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     if (this.signalData) {
       this.createChart(this.signalData.equation, this.signalData.time, this.signalData.amplitude, this.signalData.energie);
     } else {
-      this.fetchSignalData();
+      this.fetchSignalData(this.signalName);
     }
   }
 
-  fetchSignalData() {
-    const apiUrl = 'http://127.0.0.1:5000/api/get-signal-data'; // Backend URL
+  fetchSignalData(signalName: string) {
+    const apiUrl = `http://127.0.0.1:5000/api/get-signal-data/${signalName}`;
 
     this.http.get(apiUrl).subscribe(
       (response: any) => {
+        if (response.error) {
+          console.error('API Error:', response.error);
+          return;
+        }
         this.createChart(response.equation, response.time, response.amplitude, response.energie);
       },
       (error) => {
-        console.error('Failed to fetch signal data:', error);
+        console.error(`Failed to fetch signal data for ${signalName}:`, error);
       }
     );
   }
 
   createChart(equation: string, time: number[], amplitude: number[], energie: number) {
+    if (this.chart) {
+      this.chart.destroy(); // Destroy previous chart before creating a new one
+    }
+
     this.chart = new Chart({
       chart: {
         type: 'line',
@@ -46,15 +55,11 @@ export class SignalGraphComponent implements OnInit {
         text: equation,
       },
       xAxis: {
-        title: {
-          text: 'Time (t)',
-        },
-        categories: time.map(String), // Convert time values to strings for categories
+        title: { text: 'Time (t)' },
+        categories: time.map(String),
       },
       yAxis: {
-        title: {
-          text: 'Amplitude',
-        },
+        title: { text: 'Amplitude' },
       },
       series: [
         {
@@ -63,12 +68,8 @@ export class SignalGraphComponent implements OnInit {
           type: 'line',
         },
       ],
-      tooltip: {
-        valueDecimals: 2,
-      },
-      credits: {
-        enabled: false, // Disable the Highcharts watermark
-      },
+      tooltip: { valueDecimals: 2 },
+      credits: { enabled: false },
     });
   }
 }

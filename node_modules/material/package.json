@@ -1,0 +1,26 @@
+{
+  "name": "material",
+  "version": "0.9.23",
+  "description": "A lightweight implementation of Material Design Components for the web - ES6",
+  "main": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/alkaloid/material.git"
+  },
+  "author": "Jérôme Vial <jerome.vial@gmail.com>",
+  "license": "GPL-3",
+  "bugs": {
+    "url": "https://gitlab.com/alkaloid/material/issues"
+  },
+  "homepage": "https://gitlab.com/alkaloid/material",
+  "keywords": [
+    "lightweight material design ui component web es6 vanilla javascript"
+  ],
+  "devDependencies": {
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
