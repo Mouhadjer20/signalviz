@@ -107,12 +107,22 @@ signal_functions = {
 
 # Flask route to serve signal data
 @app.route("/api/get-signal-data/<signal_name>", methods=["GET"])
-@cross_origin()  # Enable CORS for this route
-def signal_data(signal_name):
+@cross_origin()
+def get_signal_data_by_name(signal_name):
     if signal_name in signal_functions:
         return jsonify(get_signal_data(signal_functions[signal_name]))
     else:
         return jsonify({"error": "Invalid signal name"}), 400
+
+
+@app.route("/api/get-signal-data", methods=["GET"])
+@cross_origin()
+def get_all_signal_data():
+    response = {}
+    for signal_name in signal_functions:
+        response.update({signal_name: get_signal_data(signal_functions[signal_name])})
+
+    return jsonify(response)
 
 # Run the Flask app
 if __name__ == "__main__":
