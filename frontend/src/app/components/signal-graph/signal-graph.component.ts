@@ -11,14 +11,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./signal-graph.component.css'],
 })
 export class SignalGraphComponent implements OnInit {
-  @Input() signalData: { time: number[]; amplitude: number[] } | undefined; // Input from parent component
+  @Input() signalData: { equation: string; time: number[]; amplitude: number[]; energie: number; } | undefined; // Input from parent component
   chart: Chart | undefined; // Change to `undefined` instead of `null`
 
   constructor(private http: HttpClient) {} // Inject HttpClient here
 
   ngOnInit() {
     if (this.signalData) {
-      this.createChart(this.signalData.time, this.signalData.amplitude);
+      this.createChart(this.signalData.equation, this.signalData.time, this.signalData.amplitude, this.signalData.energie);
     } else {
       this.fetchSignalData();
     }
@@ -29,7 +29,7 @@ export class SignalGraphComponent implements OnInit {
 
     this.http.get(apiUrl).subscribe(
       (response: any) => {
-        this.createChart(response.time, response.amplitude);
+        this.createChart(response.equation, response.time, response.amplitude, response.energie);
       },
       (error) => {
         console.error('Failed to fetch signal data:', error);
@@ -37,13 +37,13 @@ export class SignalGraphComponent implements OnInit {
     );
   }
 
-  createChart(time: number[], amplitude: number[]) {
+  createChart(equation: string, time: number[], amplitude: number[], energie: number) {
     this.chart = new Chart({
       chart: {
         type: 'line',
       },
       title: {
-        text: 'Signal Graph',
+        text: equation,
       },
       xAxis: {
         title: {
