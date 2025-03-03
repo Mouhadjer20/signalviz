@@ -1,9 +1,14 @@
 <main>
-    <h1>Some Functions helps in your study</h1>
-    <br>
+    <h1 class="title">Explore Mathematical Functions</h1>
+    <p class="description">
+      This section contains examples of function studies from the 
+      <a href="/basics">Basics</a> section. Each card provides details such as the function's name, equation, graph, energy, power, and derivative.
+    </p>
+  
     <div class="cards">
-        @for (signal of signals; track $index) {
-            <app-signal-card [signalData]="signal"></app-signal-card>
-        }
+      @for (signal of signals; track $index) {
+        <app-signal-card class="graph-card" [signalData]="signal"></app-signal-card>
+      }
     </div>
-</main>
+  </main>
+  

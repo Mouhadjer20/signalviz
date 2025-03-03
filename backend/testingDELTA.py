@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
+import os
+os.environ["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
 
 plt.style.use('dark_background')
 

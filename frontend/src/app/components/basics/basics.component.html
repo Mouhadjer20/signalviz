@@ -1,0 +1,30 @@
+<div>
+    <h2>Rectangle Function</h2>
+    <p>
+      The rectangle function is defined as:
+      <code>rect(t) = A for |t - C| ≤ 0.5, 0 otherwise</code>
+    </p>
+    <div [chart]="chart"></div>
+    <h3>Adjust Parameters</h3>
+    <div>
+      <label>Amplitude (A):</label>
+      <input type="range" min="0" max="5" step="0.1" [(ngModel)]="amplitude" (input)="updateChart()" />
+      <span>{{ amplitude }}</span>
+    </div>
+    <div>
+      <label>Center (C):</label>
+      <input type="range" min="-5" max="5" step="0.1" [(ngModel)]="center" (input)="updateChart()" />
+      <span>{{ center }}</span>
+    </div>
+    <div>
+      <label>Time Range (t):</label>
+      <input type="range" min="1" max="10" step="0.1" [(ngModel)]="timeRange" (input)="updateChart()" />
+      <span>{{ timeRange }}</span>
+    </div>
+    <h3>Key Properties</h3>
+    <ul>
+      <li>Discontinuous at t = C ± 0.5</li>
+      <li>Finite duration</li>
+      <li>Even symmetry</li>
+    </ul>
+  </div>

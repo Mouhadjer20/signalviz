@@ -13,14 +13,18 @@ export class SignalGraphComponent implements OnInit {
   chart?: Chart;
   @Input() timeData: number[] = [0, 1, 2, 3, 4, 5];
   @Input() amplitudeData: number[] = [0, 1, 0.5, -0.5, -1, 0];
+  @Input() linkOfReq: string = "";
 
   constructor() {}
 
   ngOnInit() {
-    this.createChart();
+    if(this.linkOfReq.match("basics"))
+      this.createChartBasics();
+    else
+      this.createChartExamples();
   }
 
-  createChart() {
+  createChartExamples() {
     if (this.chart) {
       this.chart.destroy(); // Destroy previous chart before creating a new one
     }
@@ -37,6 +41,11 @@ export class SignalGraphComponent implements OnInit {
       xAxis: {
         title: { text: 'Time (t)' },
         categories: this.timeData.map(String),
+        labels: {
+          formatter: function () {
+            return Math.round(Number(this.value)).toString(); // Show integers only
+          },
+        }
       },
       yAxis: {
         title: { text: 'Amplitude' },
@@ -49,10 +58,14 @@ export class SignalGraphComponent implements OnInit {
         },
       ],
       legend: {
-        enabled: false, // ❌ Remove the legend
+        enabled: false,
       },
       tooltip: { valueDecimals: 2 },
       credits: { enabled: false },
     });
+  }
+
+  createChartBasics(){
+
   }
 }

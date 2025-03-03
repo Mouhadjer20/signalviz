@@ -17,9 +17,12 @@ def u(t):
     """Fonction échelon unité: renvoie 1 si t >= 0, sinon 0."""
     return np.where(t >= 0, 1, 0)
 
+def r(t):
+    return np.where(t >= 0, t, 0)
+
 def delta(t, t0, amplitude=1):
     """Impulse de Dirac discrète: renvoie une impulsion à t0 avec une amplitude donnée."""
-    return amplitude * (np.isclose(t, t0))
+    return amplitude * (t == t0)
 
 # Définition des signaux spécifiques
 def x1(t):
@@ -27,7 +30,7 @@ def x1(t):
     return 2 * rect(2 * t - 1)
 
 def x2(t):
-    """sin(pi * t) * Rect(t / 2)."""
+    """sin(πt) * Rect(t / 2)."""
     return np.sin(np.pi * t) * rect(t / 2)
 
 def x3(t):
@@ -44,7 +47,7 @@ def x5(t):
 
 def x6(t):
     """2δ(t + 1) - δ(t - 2) + δ(t) - 2δ(t - 1)."""
-    return 2 * delta(t, -1) - delta(t, 2) + delta(t, 0) - 2 * delta(t, 1)
+    return delta(t, -1, 2) - delta(t, 2) + delta(t, 0) - delta(t, 1, 2)
 
 def x7(t):
     """Rect((t - 1) / 2) - Rect((t + 1) / 2)."""
@@ -68,7 +71,7 @@ def x11(t):
 
 def x13(t):
     """r(t + 1) - 2 * r(t) + r(t - 1)."""
-    return rect(t + 1) - 2 * rect(t) + rect(t - 1)
+    return r(t + 1) - 2 * r(t) + r(t - 1)
 
 def dirac(x, t):
     """Calcule l'énergie des impulsions de Dirac présentes dans le signal."""
@@ -80,24 +83,36 @@ def dirac(x, t):
 
     return int(energie_dirac)
 
+def classify(signal, t= np.linspace(-500, 500, 10000)):
+    x = signal(t)
+    E = np.trapezoid(np.abs(x) ** 2, t)
+    P = E / (t[-1] - t[0])
+
+    if E > 300:
+        E = 'Infini'
+        P = round(P, 2)
+    else:
+       E = str(round(E, 2))
+       P = 0
+
+    if P == 0 and E == 0:
+        E = str(dirac(x, t))
+    return E, P
+
 # Generate signal data
-def get_signal_data(signal, t=np.linspace(-5, 5, 1000)):
+def get_signal_data(signal, t=np.linspace(-4, 5, 1000)):
     """Return time and amplitude data as JSON."""
     y = signal(t)
     docstring = signal.__doc__
-    energie = dirac(y, t)
-
-    # Resample time and amplitude arrays
-    resampled_t = np.arange(-5, 5.5, 0.5 )  # [-5, -4.5, -4, ..., 5]
-    indices = np.searchsorted(t, resampled_t)
-    resampled_amplitude = y[indices]
+    energie, puissance = classify(signal, t)
 
     return {
         "id": signal.__name__ + "(t)",
         "equation": docstring,  # Include the docstring in the response
-        "time": resampled_t.tolist(),  # Resampled time array
-        "amplitude": resampled_amplitude.tolist(),  # Resampled amplitude array
+        "time": t.tolist(),  # Resampled time array
+        "amplitude": y.tolist(),  # Resampled amplitude array
         "energy": energie,  # Include the energy in the response
+        "puissance": puissance
     }
 
 signal_functions = {

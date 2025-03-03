@@ -16,15 +16,17 @@ export class Signal {
   equation: string;
   amplitude: number[];
   time: number[];
-  energy: number;
+  energy: string;
+  puissance: number;
   derivative: string;
 
-  constructor(id: string, equation: string, amplitude: number[], time: number[], energy: number, derivative: string = ""){
+  constructor(id: string, equation: string, amplitude: number[], time: number[], energy: string, puissance:number, derivative: string = ""){
     this.id = id;
     this.equation = equation;
     this.amplitude = amplitude;
     this.time = time;
     this.energy = energy;
+    this.puissance = puissance
     this.derivative = derivative || ""; // Default value if null
   }
 }
