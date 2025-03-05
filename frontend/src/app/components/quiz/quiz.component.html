@@ -1,1 +1,13 @@
-<p>quiz works!</p>
+<div>
+    <h2>Quiz Section</h2>
+    <button (click)="generateQuizQuestion()" [disabled]="loading">
+      {{ loading ? 'Generating...' : 'Generate Quiz Question' }}
+    </button>
+  
+    <p *ngIf="error" style="color: red;">{{ error }}</p>
+  
+    <div *ngIf="quizQuestion">
+      <h3>Quiz Question:</h3>
+      <p>{{ quizQuestion }}</p>
+    </div>
+  </div>

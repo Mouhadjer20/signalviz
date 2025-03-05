@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import requests
 from flask_cors import cross_origin  # Import cross_origin decorator
 import numpy as np
 
@@ -104,7 +105,7 @@ def get_signal_data(signal, t=np.linspace(-4, 5, 1000)):
     """Return time and amplitude data as JSON."""
     y = signal(t)
     docstring = signal.__doc__
-    energie, puissance = classify(signal, t)
+    energie, puissance = classify(signal)
 
     return {
         "id": signal.__name__ + "(t)",
@@ -139,6 +140,45 @@ def get_all_signal_data():
         response.append(get_signal_data(signal_functions[signal_name]))
 
     return jsonify(response)
+
+# DeepSeek API configuration
+DEEPSEEK_API_URL = "https://api.deepseek.com/v1/query"
+DEEPSEEK_API_KEY = ""
+
+# Endpoint to generate a quiz question
+@app.route("/api/generate-quiz", methods=["POST"])
+@cross_origin()
+def generate_quiz():
+    try:
+
+        
+        # Prepare the prompt for DeepSeek
+        prompt = f"""
+        Generate 20 random questions of type 'graph_with_equations'. 
+        Each question should have:
+        - A signal graph (for graph-based questions).
+        - Four answer choices, with one correct answer.
+        - The correct answer index.
+        Return the response in JSON format.
+        """
+
+        headers = {
+            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        # Call the DeepSeek API
+        response = requests.post(DEEPSEEK_API_URL, json={"prompt": prompt}, headers=headers)
+        response.raise_for_status()  # Raise an error for bad responses (4xx, 5xx)
+
+        # Extract the quiz question from the response
+        quiz_question = response.json().get("response", "No question generated.")
+
+        # Return the quiz question to the frontend
+        return jsonify({"question": quiz_question})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Run the Flask app
 if __name__ == "__main__":

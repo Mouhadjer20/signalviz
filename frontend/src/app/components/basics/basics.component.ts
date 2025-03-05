@@ -17,8 +17,15 @@ export class BasicsComponent implements OnInit {
   amplitude: number = 1;
   center: number = 0;
   timeRange: number = 5;
+  signalType: string = 'rect';
 
   constructor() {
+    this.initChart();
+  }
+
+  ngOnInit(): void {}
+
+  initChart() {
     this.chart = new Chart({
       chart: {
         type: 'line',
@@ -27,7 +34,7 @@ export class BasicsComponent implements OnInit {
         }
       },
       title: {
-        text: 'Rectangle Function',
+        text: 'Signal Function',
       },
       xAxis: {
         title: {
@@ -40,12 +47,12 @@ export class BasicsComponent implements OnInit {
         },
       },
       tooltip: {
-        valueDecimals: 2, // Show exact values on hover
+        valueDecimals: 2,
       },
       series: [
         {
-          name: 'rect(t)',
-          data: this.generateRectangleData(this.amplitude, this.center, this.timeRange),
+          name: this.signalType + '(t)',
+          data: this.generateData(),
           type: 'line',
           marker: { enabled: false },
         },
@@ -56,14 +63,64 @@ export class BasicsComponent implements OnInit {
       credits: { enabled: false },
     });
   }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
+  generateData(): number[][] {
+    switch (this.signalType) {
+      case 'rect':
+        return this.generateRectangleData(this.amplitude, this.center, this.timeRange);
+      case 'tri':
+        return this.generateTriangleData(this.amplitude, this.center, this.timeRange);
+      case 'u':
+        return this.generateUnitStepData(this.amplitude, this.center, this.timeRange);
+      case 'sin':
+        return this.generateSinusData(this.amplitude, this.center, this.timeRange);
+      case 'delta':
+        return this.generateDiracImpulse(this.amplitude, this.center, this.timeRange);
+      default:
+        return [];
+    }
   }
 
   generateRectangleData(A: number, C: number, t: number): number[][] {
     const data: number[][] = [];
-    for (let time = -t; time <= t; time += 0.1) {
+    for (let time = -t; time <= t; time += 0.001) {
       const value = Math.abs(time - C) <= 0.5 ? A : 0;
+      data.push([time, value]);
+    }
+    return data;
+  }
+
+  generateTriangleData(A: number, C: number, t: number): number[][] {
+    const data: number[][] = [];
+    for (let time = -t; time <= t; time += 0.1) {
+      const value = Math.max(0, A * (1 - Math.abs(time - C)));
+      data.push([time, value]);
+    }
+    return data;
+  }
+
+  generateUnitStepData(A: number, C: number, t: number): number[][] {
+    const data: number[][] = [];
+    for (let time = -t; time <= t; time += 0.1) {
+      const value = time >= C ? A : 0;
+      data.push([time, value]);
+    }
+    return data;
+  }
+
+  generateSinusData(A: number, C: number, t: number): number[][] {
+    const data: number[][] = [];
+    for (let time = -t; time <= t; time += 0.1) {
+      const value = A * Math.sin(2 * Math.PI * (time - C));
+      data.push([time, value]);
+    }
+    return data;
+  }
+
+  generateDiracImpulse(A: number, C: number, t: number): number[][] {
+    const data: number[][] = [];
+    for (let time = -t; time <= t; time += 0.1) {
+      const value = Math.abs(time - C) < 0.05 ? A : 0;
       data.push([time, value]);
     }
     return data;
@@ -71,7 +128,12 @@ export class BasicsComponent implements OnInit {
 
   updateChart() {
     this.chart.ref$.subscribe((chart) => {
-      chart.series[0].setData(this.generateRectangleData(this.amplitude, this.center, this.timeRange));
+      chart.series[0].setData(this.generateData());
     });
+  }
+
+  setSignalType(type: string) {
+    this.signalType = type;
+    this.updateChart();
   }
 }
