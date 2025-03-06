@@ -1,3 +1,52 @@
-<div>
-  <h1>Course Section</h1>
+<div class="course-container">
+  <!-- Section Title -->
+  <header class="text-center">
+    <h1 class="display-6 fw-bold" style="color: #112D4E;">📚 Course Topics</h1>
+    <p class="fs-6" style="color: #3F72AF;">Explore foundational topics and test your knowledge with quizzes.</p>
+  </header>
+
+  <!-- Course List -->
+  <div class="function-list">
+    <!-- Basics -->
+    <div class="function-card" (click)="toggleDetails('basics')">
+      <h3 style="color: #112D4E;">📘 Basics</h3>
+      <p>Fundamentals of signal processing, transformations, and properties.</p>
+      <div id="basics" class="course-details">
+        <ul>
+          <li>📌 Fourier Transform</li>
+          <li>📌 Laplace Transform</li>
+          <li>📌 Convolution & Filtering</li>
+        </ul>
+        <a href="basics" class="btn btn-lt" style="background-color: #3F72AF; color: #F9F7F7;">Start Learning</a>
+      </div>
+    </div>
+
+    <!-- Signals -->
+    <div class="function-card" (click)="toggleDetails('signals')">
+      <h3 style="color: #112D4E;">🎼 Signals</h3>
+      <p>Understanding signal behavior and mathematical modeling.</p>
+      <div id="signals" class="course-details">
+        <ul>
+          <li>📌 Time-domain vs Frequency-domain</li>
+          <li>📌 Continuous & Discrete Signals</li>
+          <li>📌 Energy & Power Signals</li>
+        </ul>
+        <a href="signals" class="btn btn-lt" style="background-color: #3F72AF; color: #F9F7F7;">See Some Examples</a>
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="function-card" (click)="toggleDetails('quiz')">
+      <h3 style="color: #112D4E;">📝 Quiz</h3>
+      <p>Test your understanding with interactive questions.</p>
+      <div id="quiz" class="course-details">
+        <ul>
+          <li>🧐 Multiple Choice Questions</li>
+          <li>🔢 Numerical Problems</li>
+          <li>⚡ Quick Challenges</li>
+        </ul>
+        <a href="quiz" class="btn btn-lt" style="background-color: #3F72AF; color: #F9F7F7;">Ready to Quiz!!</a>
+      </div>
+    </div>
+  </div>
 </div>

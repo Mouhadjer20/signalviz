@@ -92,7 +92,7 @@ export class BasicsComponent implements OnInit {
 
   generateTriangleData(A: number, C: number, t: number): number[][] {
     const data: number[][] = [];
-    for (let time = -t; time <= t; time += 0.1) {
+    for (let time = -t; time <= t; time += 0.001) {
       const value = Math.max(0, A * (1 - Math.abs(time - C)));
       data.push([time, value]);
     }
@@ -101,7 +101,7 @@ export class BasicsComponent implements OnInit {
 
   generateUnitStepData(A: number, C: number, t: number): number[][] {
     const data: number[][] = [];
-    for (let time = -t; time <= t; time += 0.1) {
+    for (let time = -t; time <= t; time += 0.001) {
       const value = time >= C ? A : 0;
       data.push([time, value]);
     }
@@ -110,7 +110,7 @@ export class BasicsComponent implements OnInit {
 
   generateSinusData(A: number, C: number, t: number): number[][] {
     const data: number[][] = [];
-    for (let time = -t; time <= t; time += 0.1) {
+    for (let time = -t; time <= t; time += 0.001) {
       const value = A * Math.sin(2 * Math.PI * (time - C));
       data.push([time, value]);
     }
@@ -119,8 +119,8 @@ export class BasicsComponent implements OnInit {
 
   generateDiracImpulse(A: number, C: number, t: number): number[][] {
     const data: number[][] = [];
-    for (let time = -t; time <= t; time += 0.1) {
-      const value = Math.abs(time - C) < 0.05 ? A : 0;
+    for (let time = -t; time <= t; time += 0.01) {
+      const value = Math.abs(time - C) < 0.0000000000001 ? A : 0;
       data.push([time, value]);
     }
     return data;
