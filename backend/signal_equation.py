@@ -58,53 +58,6 @@ def parse_equation(equation):
 
     return equation
 
-def plot_signal(equation):
-    """
-    Plot the signal for the given equation over the time range [-4, 5]
-    """
-    # Create time array
-    t = np.linspace(-4, 5, 1000)
-
-    try:
-        # Prepare the equation
-        prepared_eq = parse_equation(equation)
-
-        # Create a dictionary of functions to use in eval
-        func_dict = {
-            'rect': rect,
-            'tri': tri,
-            'u': u,
-            'r': r,
-            'delta': delta,
-            'δ': delta,
-            't': t,
-            'np': np,
-            'math': math,
-            'sin': np.sin,
-            'cos': np.cos,
-            'exp': np.exp,
-            'log': np.log
-        }
-
-        # Evaluate the equation
-        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
-
-        # Plot the signal
-        plt.figure(figsize=(10, 6))
-        plt.plot(t, y)
-        plt.title(f'Signal: {equation}')
-        plt.xlabel('Time (t)')
-        plt.ylabel('Amplitude')
-        plt.grid(True)
-        plt.axhline(y=0, color='k', linestyle='--')
-        plt.axvline(x=0, color='k', linestyle='--')
-        plt.show()
-
-    except Exception as e:
-        print(f"Error processing equation: {e}")
-        print(f"Prepared equation: {prepared_eq}")
-        print("Please check your input and try again.")
-
 def get_signal_data(equation, t=np.linspace(-4, 5, 1000)):
     """Renvoie les données temporelles et d'amplitude d'un signal sous format JSON."""
     try:

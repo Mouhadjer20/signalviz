@@ -1,7 +1,13 @@
 from flask import Flask, request, jsonify
 import requests
-from flask_cors import cross_origin  # Import cross_origin decorator
+from flask_cors import cross_origin
 import numpy as np
+import json
+import re
+import math
+from openai import OpenAI
+import os
+import ast
 
 app = Flask(__name__)
 
@@ -21,9 +27,13 @@ def u(t):
 def r(t):
     return np.where(t >= 0, t, 0)
 
-def delta(t, t0, amplitude=1):
-    """Impulse de Dirac discrète: renvoie une impulsion à t0 avec une amplitude donnée."""
-    return amplitude * (t == t0)
+# def delta(t, t0, amplitude=1):
+#     """Impulse de Dirac discrète: renvoie une impulsion à t0 avec une amplitude donnée."""
+#     return amplitude * (t == t0)
+
+def delta(t, t0=0, amplitude=1):
+    """Impulse de Dirac discrète : renvoie une impulsion discrète à t0."""
+    return np.where(np.isclose(t, t0, atol=(t[1] - t[0]) / 2), amplitude, 0)
 
 # Définition des signaux spécifiques
 def x1(t):
@@ -141,44 +151,370 @@ def get_all_signal_data():
 
     return jsonify(response)
 
-# DeepSeek API configuration
-DEEPSEEK_API_URL = "https://api.deepseek.com/v1/query"
-DEEPSEEK_API_KEY = ""
+
+@app.route("/ge", methods=["GET"])
+@cross_origin()
+def ge():
+    return generate_quiz_json_format("""
+    {
+    "questions": [
+        {
+            "type": "graph_with_equations",
+            "question": "x(t) = rect(2t - 1)",
+            "answers": [
+                "rect(t - 1)",
+                "tri(2t)",
+                "rect(2t - 1)",
+                "2 * rect(2t - 1)"
+            ],
+            "index_correct_answer": 2
+        },
+        {
+            "type": "equation_with_graphs",
+            "question": "x(t) = sin(\u03c0t) * rect(t/2)",
+            "answers": [
+                "sin(\u03c0t) * rect(t/2)",
+                "tri(2t)",
+                "sin(\u03c0t) * rect(t/2)",
+                "2 * rect(2t - 1)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "graph_with_energy",
+            "question": "x(t) = tri(2t)",
+            "answers": [
+                "0.5",
+                "1.0",
+                "1.5",
+                "2.0"
+            ],
+            "index_correct_answer": 1
+        },
+        {
+            "type": "equation_with_energy",
+            "question": "x(t) = rect(t/2)",
+            "answers": [
+                "0.5",
+                "1.0",
+                "1.5",
+                "2.0"
+            ],
+            "index_correct_answer": 1
+        },
+        {
+            "type": "graph_with_equations",
+            "question": "x(t) = u(t - 1)",
+            "answers": [
+                "u(t - 1)",
+                "rect(t - 1)",
+                "ramp(t - 1)",
+                "delta(t - 1)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "equation_with_graphs",
+            "question": "x(t) = 2 * rect(2t - 1)",
+            "answers": [
+                "2 * rect(2t - 1)",
+                "rect(2t - 1)",
+                "2 * tri(2t - 1)",
+                "ramp(2t - 1)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "graph_with_energy",
+            "question": "x(t) = 2 * rect(2t - 1)",
+            "answers": [
+                "2.0",
+                "1.0",
+                "4.0",
+                "0.5"
+            ],
+            "index_correct_answer": 3
+        },
+        {
+            "type": "equation_with_energy",
+            "question": "x(t) = rect(t/2)",
+            "answers": [
+                "1.0",
+                "0.5",
+                "2.0",
+                "1.5"
+            ],
+            "index_correct_answer": 1
+        },
+        {
+            "type": "graph_with_equations",
+            "question": "x(t) = tri(t)",
+            "answers": [
+                "tri(t)",
+                "rect(t)",
+                "ramp(t)",
+                "delta(t)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "equation_with_graphs",
+            "question": "x(t) = delta(t)",
+            "answers": [
+                "delta(t)",
+                "u(t)",
+                "rect(t)",
+                "ramp(t)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "graph_with_energy",
+            "question": "x(t) = 2 * tri(2t)",
+            "answers": [
+                "4.0",
+                "2.0",
+                "1.0",
+                "0.5"
+            ],
+            "index_correct_answer": 1
+        },
+        {
+            "type": "equation_with_energy",
+            "question": "x(t) = 2 * delta(t)",
+            "answers": [
+                "4.0",
+                "2.0",
+                "1.0",
+                "0.5"
+            ],
+            "index_correct_answer": 1
+        },
+        {
+            "type": "graph_with_equations",
+            "question": "x(t) = u(t) - u(t - 1)",
+            "answers": [
+                "rect(t)",
+                "tri(t)",
+                "ramp(t)",
+                "u(t) - u(t - 1)"
+            ],
+            "index_correct_answer": 3
+        },
+        {
+            "type": "equation_with_graphs",
+            "question": "x(t) = rect(t) - rect(t - 1)",
+            "answers": [
+                "rect(t) - rect(t - 1)",
+                "tri(t)",
+                "ramp(t)",
+                "delta(t)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "graph_with_energy",
+            "question": "x(t) = delta(t + 1)",
+            "answers": [
+                "1.0",
+                "2.0",
+                "0.5",
+                "0.25"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "equation_with_energy",
+            "question": "x(t) = delta(t - 2)",
+            "answers": [
+                "1.0",
+                "2.0",
+                "0.5",
+                "0.25"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "graph_with_equations",
+            "question": "x(t) = sin(\u03c0t)",
+            "answers": [
+                "sin(\u03c0t)",
+                "cos(\u03c0t)",
+                "tri(\u03c0t)",
+                "rect(\u03c0t)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "equation_with_graphs",
+            "question": "x(t) = sin(2\u03c0t)",
+            "answers": [
+                "sin(2\u03c0t)",
+                "cos(2\u03c0t)",
+                "tri(2\u03c0t)",
+                "rect(2\u03c0t)"
+            ],
+            "index_correct_answer": 0
+        },
+        {
+            "type": "graph_with_energy",
+            "question": "x(t) = sin(\u03c0t) * rect(t/2)",
+            "answers": [
+                "2.0",
+                "1.0",
+                "0.5",
+                "1.5"
+            ],
+            "index_correct_answer": 1
+        },
+        {
+            "type": "equation_with_energy",
+            "question": "x(t) = sin(\u03c0t/2) * rect(t/2)",
+            "answers": [
+                "1.0",
+                "0.5",
+                "2.0",
+                "1.5"
+            ],
+            "index_correct_answer": 1
+        }
+        ]
+    }
+    """)
+
+def generate_quiz_json_format(quiz_data):
+    try:
+        file_name = "../frontend/public/quiz_generated.json"
+        # Load the existing JSON file
+        try:
+            with open(file_name, "r") as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {"quiz": []}  # Initialize if file is missing or invalid
+
+        data["quiz"].append({"questions": []})
+
+        # Append new questions to the last quiz
+        data["quiz"][-1]["questions"].extend(json.loads(quiz_data)["questions"])
+
+        # Save the updated JSON file
+        with open(file_name, "w") as file:
+            json.dump(data, file, indent=2)
+
+        # Return the quiz data as JSON response
+        return jsonify({"message": "Quiz updated successfully", "data": data})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Endpoint to generate a quiz question
-@app.route("/api/generate-quiz", methods=["POST"])
+@app.route("/api/generate-quiz", methods=["GET"])
 @cross_origin()
 def generate_quiz():
     try:
 
         
         # Prepare the prompt for DeepSeek
-        prompt = f"""
-        Generate 20 random questions of type 'graph_with_equations'. 
-        Each question should have:
-        - A signal graph (for graph-based questions).
-        - Four answer choices, with one correct answer.
-        - The correct answer index.
-        Return the response in JSON format.
-        """
+        prompt = """### **Objective**  \nGenerate **20 randomly selected questions** related to **signal processing**, ensuring that each **question type** matches the expected format. Questions should include **graphs or equations**, properly categorized based on the four specified types.  \n\n**Return the response as a JSON object only, without any explanations or additional text.**  \n\n---  \n\n## **Types of Questions to Generate**  \n\n1. **Graph with Multiple-Choice Equations**  \n   - Generate a **signal graph** (numerical data representation).  \n   - Provide **four mathematical equations** (one correct).  \n   - The user selects the correct equation that represents the graph.  \n\n2. **Equation with Multiple Corresponding Graphs**  \n   - Generate a **mathematical equation**.  \n   - Provide **four graph representations** (one correct).  \n   - The user selects the correct graph corresponding to the equation.  \n\n3. **Graph with Multiple Energy Values**  \n   - Generate a **signal graph** (numerical data representation).  \n   - Provide **four possible energy values** (one correct).  \n   - The user selects the correct energy value.  \n\n4. **Equation with Multiple Energy Values**  \n   - Generate a **mathematical equation**.  \n   - Provide **four possible energy values** (one correct).  \n   - The user selects the correct energy value.  \n\n---  \n\n## **Mathematical Signals to Use**  \n\n### **Basic Signal Functions**  \n- **Rectangle function**: `rect(t)`  \n- **Triangle function**: `tri(t)`  \n- **Unit step function**: `u(t)`  \n- **Ramp function**: `r(t)`  \n- **Delta function**: `delta(t, t0)`  \n\n### **Example Signal Equations**  \n1. `x1(t) = 2 * rect(2t - 1)`  \n2. `x2(t) = sin(πt) * rect(t/2)`  \n3. `x3(t) = tri(2t)`  \n4. `x4(t) = u(t - 2)`  \n5. `x5(t) = u(3 - t)`  \n6. `x6(t) = 2δ(t + 1) - δ(t - 2) + δ(t) - 2δ(t - 1)`  \n7. `x7(t) = rect((t - 1) / 2) - rect((t + 1) / 2)`  \n8. `x8(t) = tri(t - 1) - tri(t + 1)`  \n9. `x9(t) = rect(t / 2) - tri(t)`  \n10. `x10(t) = exp(-t) * u(t - 1)`  \n11. `x11(t) = sin(4πt)`  \n12. `x12(t) = r(t + 1) - 2 * r(t) + r(t - 1)`  \n\n---  \n\n## **Expected API Response Format**  \n\nReturn a JSON object containing **20 questions**, with each question formatted as follows:  \n\n### **1. Graph with Multiple-Choice Equations (Example Response)**  \n\n```json\n{\n  \"questions\": [\n    {\n      \"type\": \"graph_with_equations\",\n      \"question\": \"sin(πt) * rect(t/2)\",\n      \"answers\": [\n        \"rect(t - 1)\",\n        \"tri(2t)\",\n        \"sin(πt) * rect(t/2)\",\n        \"2 * rect(2t - 1)\"\n      ],\n      \"index_correct_answer\": 3\n    }\n  ]\n}\n```\n\n---  \n\n### **2. Equation with Multiple Graphs (Example Response)**  \n\n```json\n{\n  \"questions\": [\n    {\n      \"type\": \"equation_with_graphs\",\n      \"question\": \"sin(πt) * rect(t / 2)\",\n      \"answers\": [\n        \"sin(πt) * rect(t / 2)\",\n        \"tri(2t)\",\n        \"sin(πt) * rect(t/2)\",\n        \"2 * rect(2t - 1)\"\n      ],\n      \"index_correct_answer\": 0\n    }\n  ]\n}\n```\n\n---  \n\n### **3. Graph with Multiple Energy Values (Example Response)**  \n\n```json\n{\n  \"questions\": [\n    {\n      \"type\": \"graph_with_energy\",\n      \"question\": \"sin(4πt)\",\n      \"answers\": [\"3.2\", \"10.2\", \"2.7\", \"5.1\"],\n      \"index_correct_answer\": 1\n    }\n  ]\n}\n```\n\n---  \n\n### **4. Equation with Multiple Energy Values (Example Response)**  \n\n```json\n{\n  \"questions\": [\n    {\n      \"type\": \"equation_with_energy\",\n      \"question\": \"sin(4πt)\",\n      \"answers\": [\"10.2\", \"12.5\", \"15.3\", \"9.8\"],\n      \"index_correct_answer\": 1\n    }\n  ]\n}\n```\n\n---"""
 
-        headers = {
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
-            "Content-Type": "application/json"
-        }
+        # DeepSeek API configuration
+        client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key="Your_SEssion_key",
+        )
 
-        # Call the DeepSeek API
-        response = requests.post(DEEPSEEK_API_URL, json={"prompt": prompt}, headers=headers)
-        response.raise_for_status()  # Raise an error for bad responses (4xx, 5xx)
-
-        # Extract the quiz question from the response
-        quiz_question = response.json().get("response", "No question generated.")
+        completion = client.chat.completions.create(
+            model="deepseek/deepseek-r1-distill-llama-70b:free",
+            messages=[
+                {
+                "role": "user",
+                "content": prompt
+                }
+            ]
+        )
 
         # Return the quiz question to the frontend
-        return jsonify({"question": quiz_question})
+        return generate_quiz_json_format(completion.choices[0].message.content)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+def parse_equation(equation): 
+    """
+    Parse and prepare the equation for evaluation.
+    Replaces function names with their Python equivalents and handles special cases.
+    """
+    # Replace case-insensitive function names and special symbols
+    replacements = [
+        (r'\bRect\b', 'rect'),
+        (r'\bTri\b', 'tri'),
+        (r'\bU\b', 'u'),
+        (r'\bR\b', 'r'),
+        (r'\bramp\b', 'r'),
+        (r'\bRamp\b', 'r'),
+        (r'\bDelta\b', 'delta'),
+        (r'\bδ\b', 'delta'),
+        (r'\bπ\b', 'math.pi'),
+        (r'\bpi\b', 'math.pi'),
+        (r'\bπt\b','math.pi * t')
+    ]
+
+    for pattern, replacement in replacements:
+        equation = re.sub(pattern, replacement, equation, flags=re.IGNORECASE)
+
+    # Fix pi-related issues
+    equation = re.sub(r'(\d)π', r'\1 * math.pi', equation)
+    equation = re.sub(r'(\d)pi', r'\1 * math.pi', equation)
+    equation = re.sub(r'πt', r'math.pi * t', equation)
+    equation = re.sub(r'math.pit', r'math.pi * t', equation)
+    equation = re.sub(r'(\d)δ', r'\1 * delta', equation)
+
+    # Add multiplication for implicit multiplication
+    equation = re.sub(r'(\d)([a-zA-Z])', r'\1 * \2', equation)
+    equation = re.sub(r'([a-zA-Z])(\d)', r'\1 * \2', equation)
+
+    return equation
+
+def get_signal(equation, t=np.linspace(-4, 5, 1000)):
+    """Renvoie les données temporelles et d'amplitude d'un signal sous format JSON."""
+    try:
+        # Préparer l'équation
+        prepared_eq = parse_equation(equation)
+
+        # Dictionnaire des fonctions disponibles
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+
+        # Évaluer l'équation
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Retourner les données sous format JSON
+        return jsonify({"time": t.tolist(), "amplitude": y.tolist()})
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
+
+@app.route("/get_signal", methods=["GET"])
+@cross_origin()
+def signal_api():
+    equation = request.args.get("equation", "")
+    equation = equation.replace("  ", " ")
+    # 2. + => %2B
+    return get_signal(equation)
 
 # Run the Flask app
 if __name__ == "__main__":

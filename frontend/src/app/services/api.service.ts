@@ -12,6 +12,6 @@ export class ApiService {
 
   // Method to generate a quiz question
   generateQuizQuestion(): Observable<any> {
-    return this.http.post(`${this.backendUrl}/api/generate-quiz`, {});
+    return this.http.get(`${this.backendUrl}/api/generate-quiz-localy`, {});
   }
 }

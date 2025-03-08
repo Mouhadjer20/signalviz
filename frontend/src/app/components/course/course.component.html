@@ -1,4 +1,10 @@
-<div class="course-container">
+<div class="spinner-container" *ngIf="showSpinner">
+  <div class="spinner"></div>
+  <p class="countdown-text">{{ countdown | date:'mm:ss' }}</p>
+</div>
+
+
+<div class="course-container" *ngIf="!this.showSpinner">
   <!-- Section Title -->
   <header class="text-center">
     <h1 class="display-6 fw-bold" style="color: #112D4E;">📚 Course Topics</h1>
@@ -45,7 +51,7 @@
           <li>🔢 Numerical Problems</li>
           <li>⚡ Quick Challenges</li>
         </ul>
-        <a href="quiz" class="btn btn-lt" style="background-color: #3F72AF; color: #F9F7F7;">Ready to Quiz!!</a>
+        <div class="btn btn-lt" style="background-color: #3F72AF; color: #F9F7F7;" (click)="generateQuiz()">Ready to Quiz!!</div>
       </div>
     </div>
   </div>

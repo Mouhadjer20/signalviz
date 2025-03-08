@@ -1,0 +1,29 @@
+.container, .question-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 77.5vh;
+  height: auto;
+  position: relative;
+}
+
+.title-question {
+  color: white;
+  padding: 10px;
+}
+
+.answers {
+  padding: 10px;
+  flex-grow: 1; /* Pushes the buttons down */
+}
+
+.prev-next-btn {
+  margin-top: auto; /* Push to bottom of .container */
+  padding: 10px;
+  text-align: center;
+}
+
+li, ul{
+  margin-top: auto; /* Push to bottom of .container */
+  padding: 10px;
+  text-align: center;
+}

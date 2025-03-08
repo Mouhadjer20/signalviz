@@ -4,7 +4,7 @@
     <mat-card-title><strong>Function</strong> '{{signalData.id}}'</mat-card-title>
     <mat-card-subtitle><strong>Equation: </strong>'{{signalData.equation}}'</mat-card-subtitle>
   </mat-card-header>
-  <app-signal-graph [timeData]="signalData.time" [amplitudeData]="signalData.amplitude"></app-signal-graph>
+  <app-signal-graph linkOfReq="examples" [timeData]="signalData.time" [amplitudeData]="signalData.amplitude"></app-signal-graph>
   <mat-card-content>
     <ul>
       <li><p><strong>Energy: </strong>{{signalData.energy}}</p></li>

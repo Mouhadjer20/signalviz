@@ -1,0 +1,18 @@
+<div class="container result-container p-4 rounded shadow-lg">
+    <h2 class="text-center text-success">🎉 Quiz Results</h2>
+    <h4 class="text-center text-dark">You scored {{ score }} / {{ questions.length }}</h4>
+  
+    <ul class="list-group mt-4">
+      <li *ngFor="let question of questions; let i = index" class="list-group-item">
+        <p class="fw-bold">{{ question.equation || 'Identify the correct equation:' }}</p>
+        <p [class.text-success]="selectedAnswers[i] === correctAnswers[i]" [class.text-danger]="selectedAnswers[i] !== correctAnswers[i]">
+          Your Answer: {{ question.answers[selectedAnswers[i]] || 'Not Answered' }}
+        </p>
+        <p class="text-primary">Correct Answer: {{ question.answers[correctAnswers[i]] }}</p>
+      </li>
+    </ul>
+  
+    <div class="text-center mt-4">
+      <button class="btn btn-primary" (click)="restartQuiz()">🔄 Restart Quiz</button>
+    </div>
+  </div>
