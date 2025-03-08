@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { timeout, catchError } from 'rxjs/operators';
-import { of, throwError, interval } from 'rxjs';
 
 @Component({
   selector: 'app-course',
@@ -68,6 +66,7 @@ export class CourseComponent {
     } finally {
       this.showSpinner = false;
       this.stopCountdown();
+      this.router.navigate(['/quiz']);
     }
   }
 

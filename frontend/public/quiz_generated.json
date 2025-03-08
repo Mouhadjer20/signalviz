@@ -671,224 +671,661 @@
     {
       "questions": [
         {
-            "type": "graph_with_equations",
-            "question": "x(t) = rect(2t - 1)",
-            "answers": [
-                "rect(t - 1)",
-                "tri(2t)",
-                "rect(2t - 1)",
-                "2 * rect(2t - 1)"
-            ],
-            "index_correct_answer": 2
+          "type": "graph_with_equations",
+          "question": "x(t) = rect(2t - 1)",
+          "answers": [
+            "rect(t - 1)",
+            "tri(2t)",
+            "rect(2t - 1)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 2
         },
         {
-            "type": "equation_with_graphs",
-            "question": "x(t) = sin(\u03c0t) * rect(t/2)",
-            "answers": [
-                "sin(\u03c0t) * rect(t/2)",
-                "tri(2t)",
-                "sin(\u03c0t) * rect(t/2)",
-                "2 * rect(2t - 1)"
-            ],
-            "index_correct_answer": 0
+          "type": "equation_with_graphs",
+          "question": "x(t) = sin(\u03c0t) * rect(t/2)",
+          "answers": [
+            "sin(\u03c0t) * rect(t/2)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t/2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "graph_with_energy",
-            "question": "x(t) = tri(2t)",
-            "answers": [
-                "0.5",
-                "1.0",
-                "1.5",
-                "2.0"
-            ],
-            "index_correct_answer": 1
+          "type": "graph_with_energy",
+          "question": "x(t) = tri(2t)",
+          "answers": [
+            "0.5",
+            "1.0",
+            "1.5",
+            "2.0"
+          ],
+          "index_correct_answer": 1
         },
         {
-            "type": "equation_with_energy",
-            "question": "x(t) = rect(t/2)",
-            "answers": [
-                "0.5",
-                "1.0",
-                "1.5",
-                "2.0"
-            ],
-            "index_correct_answer": 1
+          "type": "equation_with_energy",
+          "question": "x(t) = rect(t/2)",
+          "answers": [
+            "0.5",
+            "1.0",
+            "1.5",
+            "2.0"
+          ],
+          "index_correct_answer": 1
         },
         {
-            "type": "graph_with_equations",
-            "question": "x(t) = u(t - 1)",
-            "answers": [
-                "u(t - 1)",
-                "rect(t - 1)",
-                "ramp(t - 1)",
-                "delta(t - 1)"
-            ],
-            "index_correct_answer": 0
+          "type": "graph_with_equations",
+          "question": "x(t) = u(t - 1)",
+          "answers": [
+            "u(t - 1)",
+            "rect(t - 1)",
+            "ramp(t - 1)",
+            "delta(t - 1)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "equation_with_graphs",
-            "question": "x(t) = 2 * rect(2t - 1)",
-            "answers": [
-                "2 * rect(2t - 1)",
-                "rect(2t - 1)",
-                "2 * tri(2t - 1)",
-                "ramp(2t - 1)"
-            ],
-            "index_correct_answer": 0
+          "type": "equation_with_graphs",
+          "question": "x(t) = 2 * rect(2t - 1)",
+          "answers": [
+            "2 * rect(2t - 1)",
+            "rect(2t - 1)",
+            "2 * tri(2t - 1)",
+            "ramp(2t - 1)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "graph_with_energy",
-            "question": "x(t) = 2 * rect(2t - 1)",
-            "answers": [
-                "2.0",
-                "1.0",
-                "4.0",
-                "0.5"
-            ],
-            "index_correct_answer": 3
+          "type": "graph_with_energy",
+          "question": "x(t) = 2 * rect(2t - 1)",
+          "answers": [
+            "2.0",
+            "1.0",
+            "4.0",
+            "0.5"
+          ],
+          "index_correct_answer": 3
         },
         {
-            "type": "equation_with_energy",
-            "question": "x(t) = rect(t/2)",
-            "answers": [
-                "1.0",
-                "0.5",
-                "2.0",
-                "1.5"
-            ],
-            "index_correct_answer": 1
+          "type": "equation_with_energy",
+          "question": "x(t) = rect(t/2)",
+          "answers": [
+            "1.0",
+            "0.5",
+            "2.0",
+            "1.5"
+          ],
+          "index_correct_answer": 1
         },
         {
-            "type": "graph_with_equations",
-            "question": "x(t) = tri(t)",
-            "answers": [
-                "tri(t)",
-                "rect(t)",
-                "ramp(t)",
-                "delta(t)"
-            ],
-            "index_correct_answer": 0
+          "type": "graph_with_equations",
+          "question": "x(t) = tri(t)",
+          "answers": [
+            "tri(t)",
+            "rect(t)",
+            "ramp(t)",
+            "delta(t)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "equation_with_graphs",
-            "question": "x(t) = delta(t)",
-            "answers": [
-                "delta(t)",
-                "u(t)",
-                "rect(t)",
-                "ramp(t)"
-            ],
-            "index_correct_answer": 0
+          "type": "equation_with_graphs",
+          "question": "x(t) = delta(t)",
+          "answers": [
+            "delta(t)",
+            "u(t)",
+            "rect(t)",
+            "ramp(t)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "graph_with_energy",
-            "question": "x(t) = 2 * tri(2t)",
-            "answers": [
-                "4.0",
-                "2.0",
-                "1.0",
-                "0.5"
-            ],
-            "index_correct_answer": 1
+          "type": "graph_with_energy",
+          "question": "x(t) = 2 * tri(2t)",
+          "answers": [
+            "4.0",
+            "2.0",
+            "1.0",
+            "0.5"
+          ],
+          "index_correct_answer": 1
         },
         {
-            "type": "equation_with_energy",
-            "question": "x(t) = 2 * delta(t)",
-            "answers": [
-                "4.0",
-                "2.0",
-                "1.0",
-                "0.5"
-            ],
-            "index_correct_answer": 1
+          "type": "equation_with_energy",
+          "question": "x(t) = 2 * delta(t)",
+          "answers": [
+            "4.0",
+            "2.0",
+            "1.0",
+            "0.5"
+          ],
+          "index_correct_answer": 1
         },
         {
-            "type": "graph_with_equations",
-            "question": "x(t) = u(t) - u(t - 1)",
-            "answers": [
-                "rect(t)",
-                "tri(t)",
-                "ramp(t)",
-                "u(t) - u(t - 1)"
-            ],
-            "index_correct_answer": 3
+          "type": "graph_with_equations",
+          "question": "x(t) = u(t) - u(t - 1)",
+          "answers": [
+            "rect(t)",
+            "tri(t)",
+            "ramp(t)",
+            "u(t) - u(t - 1)"
+          ],
+          "index_correct_answer": 3
         },
         {
-            "type": "equation_with_graphs",
-            "question": "x(t) = rect(t) - rect(t - 1)",
-            "answers": [
-                "rect(t) - rect(t - 1)",
-                "tri(t)",
-                "ramp(t)",
-                "delta(t)"
-            ],
-            "index_correct_answer": 0
+          "type": "equation_with_graphs",
+          "question": "x(t) = rect(t) - rect(t - 1)",
+          "answers": [
+            "rect(t) - rect(t - 1)",
+            "tri(t)",
+            "ramp(t)",
+            "delta(t)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "graph_with_energy",
-            "question": "x(t) = delta(t + 1)",
-            "answers": [
-                "1.0",
-                "2.0",
-                "0.5",
-                "0.25"
-            ],
-            "index_correct_answer": 0
+          "type": "graph_with_energy",
+          "question": "x(t) = delta(t + 1)",
+          "answers": [
+            "1.0",
+            "2.0",
+            "0.5",
+            "0.25"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "equation_with_energy",
-            "question": "x(t) = delta(t - 2)",
-            "answers": [
-                "1.0",
-                "2.0",
-                "0.5",
-                "0.25"
-            ],
-            "index_correct_answer": 0
+          "type": "equation_with_energy",
+          "question": "x(t) = delta(t - 2)",
+          "answers": [
+            "1.0",
+            "2.0",
+            "0.5",
+            "0.25"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "graph_with_equations",
-            "question": "x(t) = sin(\u03c0t)",
-            "answers": [
-                "sin(\u03c0t)",
-                "cos(\u03c0t)",
-                "tri(\u03c0t)",
-                "rect(\u03c0t)"
-            ],
-            "index_correct_answer": 0
+          "type": "graph_with_equations",
+          "question": "x(t) = sin(\u03c0t)",
+          "answers": [
+            "sin(\u03c0t)",
+            "cos(\u03c0t)",
+            "tri(\u03c0t)",
+            "rect(\u03c0t)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "equation_with_graphs",
-            "question": "x(t) = sin(2\u03c0t)",
-            "answers": [
-                "sin(2\u03c0t)",
-                "cos(2\u03c0t)",
-                "tri(2\u03c0t)",
-                "rect(2\u03c0t)"
-            ],
-            "index_correct_answer": 0
+          "type": "equation_with_graphs",
+          "question": "x(t) = sin(2\u03c0t)",
+          "answers": [
+            "sin(2\u03c0t)",
+            "cos(2\u03c0t)",
+            "tri(2\u03c0t)",
+            "rect(2\u03c0t)"
+          ],
+          "index_correct_answer": 0
         },
         {
-            "type": "graph_with_energy",
-            "question": "x(t) = sin(\u03c0t) * rect(t/2)",
-            "answers": [
-                "2.0",
-                "1.0",
-                "0.5",
-                "1.5"
-            ],
-            "index_correct_answer": 1
+          "type": "graph_with_energy",
+          "question": "x(t) = sin(\u03c0t) * rect(t/2)",
+          "answers": [
+            "2.0",
+            "1.0",
+            "0.5",
+            "1.5"
+          ],
+          "index_correct_answer": 1
         },
         {
-            "type": "equation_with_energy",
-            "question": "x(t) = sin(\u03c0t/2) * rect(t/2)",
-            "answers": [
-                "1.0",
-                "0.5",
-                "2.0",
-                "1.5"
-            ],
-            "index_correct_answer": 1
+          "type": "equation_with_energy",
+          "question": "x(t) = sin(\u03c0t/2) * rect(t/2)",
+          "answers": [
+            "1.0",
+            "0.5",
+            "2.0",
+            "1.5"
+          ],
+          "index_correct_answer": 1
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "type": "graph_with_equations",
+          "question": "tri(2t)",
+          "answers": [
+            "tri(t/2)",
+            "tri(2t)",
+            "u(t) - u(t - 1)",
+            "rect(t)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "2 * rect(t - 1)",
+          "answers": [
+            "2 * rect(t - 1)",
+            "rect(t)",
+            "tri(t - 1.5)",
+            "u(t)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "rect(t / 2)",
+          "answers": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "delta(t)",
+          "answers": [
+            "1",
+            "2",
+            "0",
+            "0.5"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "u(t) - u(t - 2)",
+          "answers": [
+            "rect(t/2)",
+            "u(t) - u(t - 2)",
+            "tri(t)",
+            "r(t)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "u(t) - u(t - 2)",
+          "answers": [
+            "u(t) - u(t - 1)",
+            "rect(t)",
+            "u(t) - u(t - 2)",
+            "tri(t)"
+          ],
+          "index_correct_answer": 2
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "tri(t)",
+          "answers": [
+            "0.5",
+            "0.67",
+            "1",
+            "1.5"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "delta(t) + delta(t - 1)",
+          "answers": [
+            "2",
+            "1",
+            "4",
+            "0.5"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "sin(\u03c0t) * rect(t / 2)",
+          "answers": [
+            "rect(t - 1)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 2
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "x(t) = rect(t / 2) - rect((t + 1) / 2)",
+          "answers": [
+            "rect(t / 2) - rect((t + 1) / 2)",
+            "tri(t - 0.5)",
+            "u(t) - u(t - 1)",
+            "sin(\u03c0t) * rect(t / 2)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "r(t) - r(t - 1)",
+          "answers": [
+            "0.5",
+            "1",
+            "1.5",
+            "2"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "x(t) = 2\u03b4(t + 1) - \u03b4(t - 2)",
+          "answers": [
+            "4",
+            "5",
+            "2",
+            "1"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "exp(-t) * u(t - 1)",
+          "answers": [
+            "exp(-t) * u(t)",
+            "exp(-t) * u(t - 1)",
+            "exp(-t) * u(t - 2)",
+            "exp(t) * u(t - 1)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "sin(4\u03c0t)",
+          "answers": [
+            "sin(4\u03c0t)",
+            "sin(2\u03c0t)",
+            "cos(4\u03c0t)",
+            "rect(t)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "2 * rect(2t - 1)",
+          "answers": [
+            "2",
+            "1",
+            "0.5",
+            "0.25"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "delta(t) - delta(t - 1)",
+          "answers": [
+            "2",
+            "1",
+            "0",
+            "0.5"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "r(t + 1) - 2r(t) + r(t - 1)",
+          "answers": [
+            "delta(t + 1) - 2delta(t) + delta(t - 1)",
+            "r(t + 1) - 2r(t) + r(t - 1)",
+            "tri(t)",
+            "rect(t)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "x(t) = u(t) - u(t - 3)",
+          "answers": [
+            "u(t) - u(t - 3)",
+            "rect(t / 3)",
+            "tri(t)",
+            "r(t)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "x(t) = 2 * sin(\u03c0t) * rect(t / 2)",
+          "answers": [
+            "2",
+            "1",
+            "0.5",
+            "4"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "x(t) = r(t) - r(t - 2)",
+          "answers": [
+            "2",
+            "1",
+            "0.5",
+            "0.25"
+          ],
+          "index_correct_answer": 1
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "type": "graph_with_equations",
+          "question": "sin(\u03c0t) * rect(t / 2)",
+          "answers": [
+            "2 * rect(2t - 1)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "rect(t - 1)"
+          ],
+          "index_correct_answer": 2
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "2 * rect(2t - 1)",
+          "answers": [
+            "2 * rect(2t - 1)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "rect(t - 1)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "tri(2t)",
+          "answers": [
+            "rect(t - 1)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "2 * rect(2t - 1)",
+          "answers": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "2 * rect(2t - 1)",
+          "answers": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "rect((t - 1) / 2) - rect((t + 1) / 2)",
+          "answers": [
+            "rect((t - 1) / 2) - rect((t + 1) / 2)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "rect((t - 1) / 2) - rect((t + 1) / 2)",
+          "answers": [
+            "tri(2t)",
+            "rect((t - 1) / 2) - rect((t + 1) / 2)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "sin(\u03c0t) * rect(t / 2)",
+          "answers": [
+            "0.5",
+            "1",
+            "1.5",
+            "2"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "sin(\u03c0t) * rect(t / 2)",
+          "answers": [
+            "0.5",
+            "1",
+            "1.5",
+            "2"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "2\u03b4(t + 1) - \u03b4(t - 2) + \u03b4(t) - 2\u03b4(t - 1)",
+          "answers": [
+            "2\u03b4(t + 1) - \u03b4(t - 2) + \u03b4(t) - 2\u03b4(t - 1)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "2\u03b4(t + 1) - \u03b4(t - 2) + \u03b4(t) - 2\u03b4(t - 1)",
+          "answers": [
+            "tri(2t)",
+            "2\u03b4(t + 1) - \u03b4(t - 2) + \u03b4(t) - 2\u03b4(t - 1)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "tri(2t)",
+          "answers": [
+            "0.25",
+            "0.333",
+            "0.5",
+            "0.75"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "tri(2t)",
+          "answers": [
+            "0.25",
+            "0.333",
+            "0.5",
+            "0.75"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "2 * rect(2t - 1)",
+          "answers": [
+            "2 * rect(2t - 1)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "rect(t - 1)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "2 * rect(2t - 1)",
+          "answers": [
+            "tri(2t)",
+            "2 * rect(2t - 1)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "rect(t - 1)"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_energy",
+          "question": "2\u03b4(t + 1) - \u03b4(t - 2) + \u03b4(t) - 2\u03b4(t - 1)",
+          "answers": [
+            "5",
+            "10",
+            "15",
+            "20"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "equation_with_energy",
+          "question": "2\u03b4(t + 1) - \u03b4(t - 2) + \u03b4(t) - 2\u03b4(t - 1)",
+          "answers": [
+            "5",
+            "10",
+            "15",
+            "20"
+          ],
+          "index_correct_answer": 1
+        },
+        {
+          "type": "graph_with_equations",
+          "question": "rect((t - 1) / 2) - rect((t + 1) / 2)",
+          "answers": [
+            "rect((t - 1) / 2) - rect((t + 1) / 2)",
+            "tri(2t)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 0
+        },
+        {
+          "type": "equation_with_graphs",
+          "question": "rect((t - 1) / 2) - rect((t + 1) / 2)",
+          "answers": [
+            "tri(2t)",
+            "rect((t - 1) / 2) - rect((t + 1) / 2)",
+            "sin(\u03c0t) * rect(t / 2)",
+            "2 * rect(2t - 1)"
+          ],
+          "index_correct_answer": 1
         }
       ]
     }
