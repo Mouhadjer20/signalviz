@@ -11,16 +11,17 @@ import { Signal } from '../../models/signal/signal.module';
   templateUrl: './signals-exampls.component.html',
   styleUrl: './signals-exampls.component.css'
 })
+export class SignalsExamplsComponent implements OnInit {
+  signals: Signal[] = []; // Array to store signal data
+  selectedCardIndex: number | null = null; // Track the expanded card index
 
-export class SignalsExamplsComponent implements OnInit{
-  signals: Signal[] = [];
-  res: Signal[] = [];
   constructor(private http: HttpClient) {}
-  
+
   ngOnInit() {
-    this.fetchSignalData();
+    this.fetchSignalData(); // Fetch signal data on component initialization
   }
 
+  // Fetch signal data from the API
   fetchSignalData() {
     const apiUrl = `http://127.0.0.1:5000/api/get-signal-data`;
 
@@ -30,7 +31,8 @@ export class SignalsExamplsComponent implements OnInit{
           console.error('API Error:', response.error);
           return;
         }
-        response.forEach( (signal : Signal) => {
+        // Add each signal to the signals array
+        response.forEach((signal: Signal) => {
           this.signals.push(signal);
         });
       },
@@ -38,5 +40,16 @@ export class SignalsExamplsComponent implements OnInit{
         console.error(`Failed to fetch signal data:`, error);
       }
     );
+  }
+
+  // Toggle card expansion
+  toggleCard(index: number) {
+    if (this.selectedCardIndex === index) {
+      // If the same card is clicked again, collapse it
+      this.selectedCardIndex = null;
+    } else {
+      // Expand the clicked card
+      this.selectedCardIndex = index;
+    }
   }
 }

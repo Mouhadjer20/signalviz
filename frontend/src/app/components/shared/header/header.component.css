@@ -5,3 +5,30 @@ mat-toolbar{
     margin: 0px;
     padding: 0px;
 }
+
+.navbar {
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.nav-link {
+    color: #fff;
+    font-weight: 500; 
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #fff;
+    font-weight: bold;
+}
+

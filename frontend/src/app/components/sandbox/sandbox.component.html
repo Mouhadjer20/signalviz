@@ -1,0 +1,51 @@
+<div class="sandbox-container min-vh-100 py-4" style="background-color: #DBE2EF;">
+    <header class="text-center mb-4">
+        <h1 class="display-6 fw-bold" style="color: #112D4E;">📊 Signal Sandbox</h1>
+        <p class="fs-6" style="color: #3F72AF;">Customize and explore different signal functions in real-time.</p>
+      </header>
+    <!-- Barre de saisie des signaux -->
+    <div class="signal-input">
+      <input
+        type="text"
+        [(ngModel)]="signalExpression"
+        placeholder="Ex: rect(t), sin(4πt)"
+        (keyup.enter)="updateChart()"
+      />
+      <button (click)="updateChart()">Visualize</button>
+    </div>
+  
+    <!-- Zone du graphe -->
+    <section class="chart-section">
+      <div [chart]="chart" class="chart"></div>
+    </section>
+
+    <div class="description bg-light p-4 rounded shadow-sm">
+        <p class="lead">
+          This page allows you to visualize mathematical signals by entering their equations. 
+          Simply type a signal expression in the input field above and click "Visualize" to see the graph.
+        </p>
+        <p class="h5">
+          <strong>Available signal types:</strong>
+        </p>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <code>rect(t)</code>: Rectangular pulse (returns 1 if |t| ≤ 0.5, otherwise 0).
+          </li>
+          <li class="list-group-item">
+            <code>tri(t)</code>: Triangular pulse (returns 1 - |t| if |t| ≤ 1, otherwise 0).
+          </li>
+          <li class="list-group-item">
+            <code>sin(t)</code>: Sine wave (returns sin(t)).
+          </li>
+          <li class="list-group-item">
+            <code>u(t)</code>: Unit step function (returns 1 if t ≥ 0, otherwise 0).
+          </li>
+          <li class="list-group-item">
+            <code>r(t)</code>: Ramp function (returns t if t ≥ 0, otherwise 0).
+          </li>
+          <li class="list-group-item">
+            <code>delta(t)</code>: Dirac delta function (returns an impulse at t = 0).
+          </li>
+        </ul>
+    </div>
+</div>

@@ -1,12 +1,12 @@
 <div style="background-color: #DBE2EF;">
   <div class="container min-vh-100 py-4" style="background-color: #F9F7F7;">
-  
+
     <!-- Header -->
     <header class="text-center mb-4">
       <h1 class="display-6 fw-bold" style="color: #112D4E;">📊 Signal Visualizer</h1>
       <p class="fs-6" style="color: #3F72AF;">Customize and explore different signal functions in real-time.</p>
     </header>
-  
+
     <!-- Signal Type Selector -->
     <nav class="d-flex justify-content-center gap-3 mb-4">
       <button class="btn" style="background-color: #3F72AF; color: white;" (click)="setSignalType('rect')">Rectangle</button>
@@ -15,7 +15,7 @@
       <button class="btn" style="background-color: #DBE2EF; color: #112D4E;" (click)="setSignalType('sin')">Sinus</button>
       <button class="btn" style="background-color: #3F72AF; color: white;" (click)="setSignalType('delta')">Delta</button>
     </nav>
-  
+
     <!-- Signal Descriptions -->
     <p class="text-center mb-4" style="color: #112D4E;">
       <span [hidden]="signalType !== 'rect'"> <strong>Rect(t)</strong> = A when |t - C| ≤ 0.5, otherwise 0.</span>
@@ -24,16 +24,16 @@
       <span [hidden]="signalType !== 'sin'"> <strong>Sin(t)</strong> = A * sin(2π * (t - C)).</span>
       <span [hidden]="signalType !== 'delta'"> <strong>Delta(t)</strong> is an impulse at t = C with amplitude A.</span>
     </p>
-  
+
     <!-- Chart Section -->
     <section class="card border-0 shadow-sm mb-4" style="background-color: #DBE2EF;">
       <div class="card-body p-3">
         <div [chart]="chart" class="w-100" style="height: 350px;"></div>
       </div>
     </section>
-  
-    <!-- Parameter Controls -->
-    <section class="row g-3">
+
+     <!-- Parameter Controls -->
+     <section class="row g-3">
   
       <!-- Amplitude Control -->
       <div class="col-md-4">
@@ -63,35 +63,46 @@
       </div>
   
     </section>
-  
-    <hr style="border: none; border-top: 5px solid #3F72AF;">
 
     <!-- Key Properties -->
     <section class="mt-4">
       <h2 class="text-center fw-bold mb-3" style="color: #112D4E;">📐 Signal Properties</h2>
       <ul class="list-group list-group-flush shadow-sm rounded" style="background-color: #DBE2EF;">
-  
+
         <!-- Rectangle Properties -->
-        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Discontinuous at t = C ± 0.5</li>
-        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Finite duration</li>
-        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Even symmetry</li>
-  
+        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Classification: Deterministic, Non-periodic</li>
+        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Morphology: Piecewise constant</li>
+        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Spectral: Sinc function in frequency domain</li>
+        <li class="list-group-item" [hidden]="signalType !== 'rect'" style="background-color: #DBE2EF; color: #112D4E;">✅ Properties: Even symmetry, Finite energy, Compact support</li>
+
         <!-- Triangle Properties -->
-        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Linear decay</li>
-        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Finite duration</li>
-        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Peak at t = C</li>
-  
+        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Classification: Deterministic, Non-periodic</li>
+        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Morphology: Piecewise linear</li>
+        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Spectral: Sinc² function in frequency domain</li>
+        <li class="list-group-item" [hidden]="signalType !== 'tri'" style="background-color: #DBE2EF; color: #112D4E;">✅ Properties: Even symmetry, Finite energy, Peak at t = C</li>
+
         <!-- Unit Step Properties -->
-        <li class="list-group-item" [hidden]="signalType !== 'u'" style="background-color: #DBE2EF; color: #112D4E;">✅ Discontinuous at t = C</li>
-        <li class="list-group-item" [hidden]="signalType !== 'u'" style="background-color: #DBE2EF; color: #112D4E;">✅ Causal signal</li>
-        
+        <li class="list-group-item" [hidden]="signalType !== 'u'" style="background-color: #DBE2EF; color: #112D4E;">✅ Classification: Deterministic, Non-periodic</li>
+        <li class="list-group-item" [hidden]="signalType !== 'u'" style="background-color: #DBE2EF; color: #112D4E;">✅ Morphology: Discontinuous</li>
+        <li class="list-group-item" [hidden]="signalType !== 'u'" style="background-color: #DBE2EF; color: #112D4E;">✅ Spectral: 1 / (jω) in frequency domain</li>
+        <li class="list-group-item" [hidden]="signalType !== 'u'" style="background-color: #DBE2EF; color: #112D4E;">✅ Properties: Causal, Infinite energy</li>
+
         <!-- Sinus Properties -->
-        <li class="list-group-item" [hidden]="signalType !== 'sin'" style="background-color: #DBE2EF; color: #112D4E;">✅ Periodic</li>
-        <li class="list-group-item" [hidden]="signalType !== 'sin'" style="background-color: #DBE2EF; color: #112D4E;">✅ Always between A and -A</li>
-  
+        <li class="list-group-item" [hidden]="signalType !== 'sin'" style="background-color: #DBE2EF; color: #112D4E;">✅ Classification: Deterministic, Periodic</li>
+        <li class="list-group-item" [hidden]="signalType !== 'sin'" style="background-color: #DBE2EF; color: #112D4E;">✅ Morphology: Continuous, Oscillating</li>
+        <li class="list-group-item" [hidden]="signalType !== 'sin'" style="background-color: #DBE2EF; color: #112D4E;">✅ Spectral: Two Dirac impulses in frequency domain</li>
+        <li class="list-group-item" [hidden]="signalType !== 'sin'" style="background-color: #DBE2EF; color: #112D4E;">✅ Properties: Infinite duration, Constant amplitude range</li>
+       
+       
+        <!-- Delta Properties -->
+        <li class="list-group-item" [hidden]="signalType !== 'delta'" style="background-color: #DBE2EF; color: #112D4E;">✅ Classification: Singular, Unbounded, Non-Periodic</li>
+        <li class="list-group-item" [hidden]="signalType !== 'delta'" style="background-color: #DBE2EF; color: #112D4E;">✅ Morphology: Discontinuous, Infinitely narrow impulse with unit area</li>
+        <li class="list-group-item" [hidden]="signalType !== 'delta'" style="background-color: #DBE2EF; color: #112D4E;">✅ Spectral: Fourier Transform = constant (1)</li>
+        <li class="list-group-item" [hidden]="signalType !== 'delta'" style="background-color: #DBE2EF; color: #112D4E;">✅ Properties: Non-Conventional </li>
+      
+      
       </ul>
     </section>
-  
+
   </div>
-  </div>
-  
+</div>

@@ -1,27 +1,31 @@
-<div class="navbar navbar-expand-lg navbar-dark p-3" style="background-color: rgba(63, 114, 175, 0.9);">
+<div class="navbar navbar-expand-lg navbar-dark p-3" style="background: linear-gradient(135deg, #4e73df, #1cc88a); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Digital Signal App</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="basics">Basics</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="course">Course</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="signals">Examples</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="quiz">Quiz</a>
-                </li>
-            </ul>
-        </div>
+      <a class="navbar-brand fw-bold" routerLink="/">Digital Signal App</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" href="#" routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/basics" href="basics" routerLinkActive="active">Basics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/course" href="course" routerLinkActive="active">Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/sandbox" href="sandbox" routerLinkActive="active">Sandbox</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/signals" href="signals" routerLinkActive="active">Examples</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/quiz" href="quiz" routerLinkActive="active">Quiz</a>
+          </li>
+        </ul>
+      </div>
     </div>
-</div>
+  </div>
+  

@@ -24,3 +24,12 @@
   .function-card:hover {
     transform: scale(1.05);
   }
+
+  input[type="range"] {
+    transition: all 0.2s ease;
+    accent-color: #3F72AF; /* Custom slider color */
+  }
+  
+  input[type="range"]:hover {
+    opacity: 0.9;
+  }

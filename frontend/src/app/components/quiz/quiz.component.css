@@ -1,3 +1,5 @@
+
+
 .container, .question-card {
   display: flex;
   flex-direction: column;
@@ -22,8 +24,28 @@
   text-align: center;
 }
 
-li, ul{
+li, ul {
   margin-top: auto; /* Push to bottom of .container */
   padding: 10px;
   text-align: center;
+}
+
+.answer-item {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.answer-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.answer-item.selected {
+  border: 2px solid #0d6efd;
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

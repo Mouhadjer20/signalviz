@@ -1,71 +1,73 @@
-<div class="container quiz-container p-4 rounded shadow-lg">
-    <h2 class="text-center text-primary">🧠 Interactive Quiz</h2>
-    <div *ngIf="questions.length > 0" class="question-card">
-        <h4 class="text-center text-dark">Question {{ currentQuestionIndex + 1 }} / {{ questions.length }}</h4>
-        @if(questions[currentQuestionIndex].type.match("equation_with_graphs")){
-          <div class="title-question">
-            <p class="fw-bold text-center text-dark">{{ questions[currentQuestionIndex].question || 'Identify the correct equation:' }}</p>
-          </div>
-        <div class="answers">
-        <ul class="list-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-            <li *ngFor="let option of questions[currentQuestionIndex].answers; let i = index"
-                (click)="selectAnswer(i)"
-                [class.selected]="selectedAnswers[currentQuestionIndex] === i"
-                class="list-group-item list-group-item-action">
-                <app-signal-graph [equation]="option"></app-signal-graph>
-            </li>
+<div style="background-color: #DBE2EF;">
+<div class="container quiz-container p-4 rounded shadow-lg bg-light">
+  <h2 class="text-center text-primary fw-bold mb-4">🧠 Interactive Quiz</h2>
+
+  <div *ngIf="questions.length > 0" class="question-card">
+    <h4 class="text-center text-dark">Question {{ currentQuestionIndex + 1 }} / {{ questions.length }}</h4>
+
+    <!-- Affichage dynamique des questions -->
+    <div *ngIf="questions[currentQuestionIndex].type.match('equation_with_graphs'); else otherQuestions">
+      <div class="title-question mt-3">
+        <p class="fw-bold text-center text-dark">
+          {{ questions[currentQuestionIndex].question }}
+        </p>
+        <p class="fw-bold text-center text-dark">
+          {{ 'Identify the correct graph:' }}
+        </p>
+      </div>
+      <div class="answers">
+        <ul class="list-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+          <li *ngFor="let option of questions[currentQuestionIndex].answers; let i = index"
+              (click)="selectAnswer(i)"
+              [class.selected]="selectedAnswers[currentQuestionIndex] === i"
+              class="list-group-item list-group-item-action rounded shadow-sm answer-item">
+            <app-signal-graph [equation]="option"></app-signal-graph>
+          </li>
         </ul>
       </div>
-        }
-        @else if(questions[currentQuestionIndex].type.match("graph_with_equations")){
-          <div class="title-question">
-            <p class="fw-bold text-center text-dark"><app-signal-graph [equation]="questions[currentQuestionIndex].question"></app-signal-graph></p>
-          </div>
-          <div class="answers">
-            <ul class="list-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                <li *ngFor="let option of questions[currentQuestionIndex].answers; let i = index"
-                    (click)="selectAnswer(i)"
-                    [class.selected]="selectedAnswers[currentQuestionIndex] === i"
-                    class="list-group-item list-group-item-action">
-                {{ option }}
-                </li>
-            </ul></div>
-            }
-        @else if(questions[currentQuestionIndex].type.match("graph_with_energy")){
-          <div class="title-question">
-            <p class="fw-bold text-center text-dark"><app-signal-graph [equation]="questions[currentQuestionIndex].question"></app-signal-graph></p>
-          </div>
-          <div class="answers">
-            <ul class="list-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                <li *ngFor="let option of questions[currentQuestionIndex].answers; let i = index"
-                    (click)="selectAnswer(i)"
-                    [class.selected]="selectedAnswers[currentQuestionIndex] === i"
-                    class="list-group-item list-group-item-action">
-                {{ option }}
-                </li>
-            </ul></div>
-        }
-        @else{
-          <div class="title-question">
-            <p class="fw-bold text-center text-dark">{{ questions[currentQuestionIndex].question || 'Identify the correct equation:' }}</p>
-          </div>
-          <div class="answers">
-            <ul class="list-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                <li *ngFor="let option of questions[currentQuestionIndex].answers; let i = index"
-                    (click)="selectAnswer(i)"
-                    [class.selected]="selectedAnswers[currentQuestionIndex] === i"
-                    class="list-group-item list-group-item-action">
-                {{ option }}
-                </li>
-            </ul>
-          </div>
-        }
-      <div class="d-flex justify-content-between mt-3 prev-next-btn">
-        <button class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">⬅ Previous</button>
-        <button class="btn btn-success" (click)="nextQuestion()" [disabled]="currentQuestionIndex === questions.length - 1">Next ➡</button>
+    </div>
+
+    <!-- Autres types de questions -->
+    <ng-template #otherQuestions>
+      <div class="title-question mt-3">
+        <p class="fw-bold text-center text-dark">
+          <ng-container *ngIf="questions[currentQuestionIndex].type.match('graph_with_equations'); else defaultCase">
+            <p class="fw-bold text-center text-dark">{{ 'Select the correct equation:' }}</p>
+            <app-signal-graph [equation]="questions[currentQuestionIndex].question"></app-signal-graph>
+          </ng-container>
+        </p>
       </div>
+
+      <ng-template #defaultCase>
+        <p class="fw-bold text-center text-dark">{{ questions[currentQuestionIndex].question }}</p>
+        <p class="fw-bold text-center text-dark">{{ 'Select the correct energy:' }}</p>
+      </ng-template>
+
+      <div class="answers">
+        <ul class="list-group" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+          <li *ngFor="let option of questions[currentQuestionIndex].answers; let i = index"
+              (click)="selectAnswer(i)"
+              [class.selected]="selectedAnswers[currentQuestionIndex] === i"
+              class="list-group-item list-group-item-action rounded shadow-sm answer-item">
+            {{ option }}
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <!-- Navigation entre les questions -->
+    <div class="d-flex justify-content-between mt-4">
+      <button class="btn btn-outline-secondary rounded-pill px-4" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">
+        ⬅ Previous
+      </button>
+      <button class="btn btn-outline-success rounded-pill px-4" (click)="nextQuestion()" [disabled]="currentQuestionIndex === questions.length - 1">
+        Next ➡
+      </button>
     </div>
   </div>
+</div>
+</div>
+
 
 
   <!-- <div class="container quiz-container p-4 rounded shadow-lg">
