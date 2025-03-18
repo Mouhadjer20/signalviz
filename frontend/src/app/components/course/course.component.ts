@@ -59,14 +59,14 @@ export class CourseComponent {
         throw new Error(response.error);
       }
   
-      this.router.navigate(['/quiz']);
+      this.router.navigate(['/quiz'], {queryParams: {isgenerated: true}});
       console.log("Visited successfully", response);
     } catch (error) {
       console.error("Failed to fetch quiz data:", error);
     } finally {
       this.showSpinner = false;
       this.stopCountdown();
-      this.router.navigate(['/quiz']);
+      this.router.navigate(['/quiz'], {queryParams: {isgenerated: false}});
     }
   }
 

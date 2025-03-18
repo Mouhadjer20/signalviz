@@ -193,7 +193,7 @@ def generate_quiz():
         # DeepSeek API configuration
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key="Your_seesion_key",
+            api_key="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",
         )
 
         completion = client.chat.completions.create(
