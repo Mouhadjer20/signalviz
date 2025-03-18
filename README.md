@@ -112,13 +112,26 @@ cd backend
 ```bash
 pip install -r requirements.txt
 ```
+### 3. Generate an API Key from OpenRouter AI:
+1. Go to the *[OpenRouter AI website](https://openrouter.ai/)*.
+2. Sign up or log in to your account.
+3. Navigate to the API Keys section.
+4. Generate a new API key.
+
+### 4. Set the API Key:
+1. Open the app.py file in the backend folder.
+2. Locate the `api_key` variable:
+```python
+api_key = "your-openrouter-api-key"  # Replace with your actual API key
+```
+3. Replace `"your-openrouter-api-key"` with the API key you generated.
+
 #### 3. Run the backend server:
 ```bash
 python app.py
 ```
 
-
-### 3. Set Up the Frontend
+### 4. Set Up the Frontend
 #### 1. Navigate to the `frontend` folder:
 ```bash
 cd ../frontend
@@ -132,18 +145,7 @@ npm install
 ng serve -o
 ```
 
-### 4. Open the App
+### 5. Open the App
 Open your browser and navigate to `http://localhost:4200`.
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
 ---
-
-### **How to Use This README.md**
-1. Save the content above to a file named `README.md` in the root of your project.
-2. Replace placeholders (e.g., `Mouhadjer20`) with your actual information.
-3. Add any additional details specific to your project.
-
----
-
-Let me know if you need further assistance! 🚀
