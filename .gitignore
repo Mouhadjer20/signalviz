@@ -43,3 +43,7 @@ Thumbs.db
 
 # Python
 myenv/
+
+node_modules/
+.vscode/
+.angular/
