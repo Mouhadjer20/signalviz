@@ -94,4 +94,90 @@ export class SandboxComponent implements OnInit {
         }
       );
   }
+  updateDerivativeChart() {
+    if (!this.signalExpression) {
+      alert('Veuillez entrer une expression de signal.');
+      return;
+    }
+  
+    // Appeler le backend Flask pour obtenir la dérivée du signal
+    this.http.get(`http://127.0.0.1:5000/get_signal_derivative?equation=${encodeURIComponent(this.signalExpression)}`)
+      .subscribe(
+        (response: any) => {
+          if (response.error) {
+            console.error('Erreur du backend:', response.error);
+            alert('Erreur lors de la génération de la dérivée.');
+            return;
+          }
+  
+          // Mettre à jour le graphe avec les nouvelles données de la dérivée
+          this.chart.ref$.subscribe((chart) => {
+            const data = response.time.map((t: number, index: number) => [t, response.derivative[index]]);
+            
+            // Vérifie si une deuxième série existe déjà, sinon ajoute-la
+            if (chart.series.length > 1) {
+              chart.series[1].setData(data);
+            } else {
+              chart.addSeries({
+                name: 'Dérivée',
+                data: data,
+                type: 'line',
+                color: 'green' // Couleur différente pour la dérivée
+              });
+            }
+          });
+        },
+        (error) => {
+          console.error('Erreur HTTP:', error);
+          alert('Erreur lors de la communication avec le backend.');
+        }
+      );
+  }
+
+  updateSecondDerivativeChart() {
+    if (!this.signalExpression) {
+      alert('Veuillez entrer une expression de signal.');
+      return;
+    }
+  
+    // Appeler le backend Flask pour obtenir la dérivée du signal
+    this.http.get(`http://127.0.0.1:5000/get_signal_second_derivative?equation=${encodeURIComponent(this.signalExpression)}`)
+      .subscribe(
+        (response: any) => {
+          if (response.error) {
+            console.error('Erreur du backend:', response.error);
+            alert('Erreur lors de la génération de la dérivée.');
+            return;
+          }
+  
+          // Mettre à jour le graphe avec les nouvelles données de la dérivée
+          this.chart.ref$.subscribe((chart) => {
+            const data = response.time.map((t: number, index: number) => [t, response.derivative[index]]);
+            
+            // Vérifie si une deuxième série existe déjà, sinon ajoute-la
+            if (chart.series.length > 2) {
+              chart.series[2].setData(data);
+            } else {
+              chart.addSeries({
+                name: 'Dérivée',
+                data: data,
+                type: 'line',
+                color: 'red' // Couleur différente pour la dérivée
+              });
+            }
+          });
+        },
+        (error) => {
+          console.error('Erreur HTTP:', error);
+          alert('Erreur lors de la communication avec le backend.');
+        }
+      );
+  }
+
+  clearChart() {
+    this.chart.ref$.subscribe((chart) => {
+      // Effacer les séries du graphique
+      chart.series.forEach(series => series.setData([])); 
+    });
+  }
 }

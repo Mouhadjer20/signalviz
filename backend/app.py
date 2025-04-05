@@ -193,7 +193,7 @@ def generate_quiz():
         # DeepSeek API configuration
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key="Your_seesion_key",
+            api_key="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",
         )
 
         completion = client.chat.completions.create(
@@ -248,6 +248,94 @@ def parse_equation(equation):
     equation = re.sub(r'([a-zA-Z])(\d)', r'\1 * \2', equation)
 
     return equation
+
+def get_signal_derivative(equation, t=np.linspace(-4, 5, 1000)):
+    """Renvoie les données temporelles et la dérivée d'un signal sous format JSON."""
+    try:
+        # Préparer l'équation
+        prepared_eq = parse_equation(equation)
+
+        # Dictionnaire des fonctions disponibles
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+
+        # Évaluer l'équation
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Calcul de la dérivée avec np.gradient
+        dy_dt = np.gradient(y, t)
+
+        # Retourner les données sous format JSON
+        return jsonify({"time": t.tolist(), "derivative": dy_dt.tolist()})
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
+@app.route("/get_signal_derivative", methods=["GET"])
+@cross_origin()
+def signal_api_derivative():
+    equation = request.args.get("equation", "")
+    equation = equation.replace("  ", " ")
+    # 2. + => %2B
+    return get_signal_derivative(equation)
+
+
+def get_signal_second_derivative(equation, t=np.linspace(-4, 5, 1000)):
+    """Renvoie les données temporelles et la dérivée d'un signal sous format JSON."""
+    try:
+        # Préparer l'équation
+        prepared_eq = parse_equation(equation)
+
+        # Dictionnaire des fonctions disponibles
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+
+        # Évaluer l'équation
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Calcul de la dérivée avec np.gradient
+        dy_dt = np.gradient(y, t)
+        ddy_dt = np.gradient(dy_dt, t)
+
+        # Retourner les données sous format JSON
+        return jsonify({"time": t.tolist(), "derivative": ddy_dt.tolist()})
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
+    
+@app.route("/get_signal_second_derivative", methods=["GET"])
+@cross_origin()
+def signal_api_second_derivative():
+    equation = request.args.get("equation", "")
+    equation = equation.replace("  ", " ")
+    # 2. + => %2B
+    return get_signal_second_derivative(equation)
+
 
 def get_signal(equation, t=np.linspace(-4, 5, 1000)):
     """Renvoie les données temporelles et d'amplitude d'un signal sous format JSON."""
