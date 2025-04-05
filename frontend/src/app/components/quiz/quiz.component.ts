@@ -1,7 +1,7 @@
 // quiz.component.ts
 import { Component, OnInit } from '@angular/core';
 import quizData from '../../../../public/quiz_generated.json';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SignalGraphComponent } from '../shared/signal-graph/signal-graph.component';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -21,14 +21,27 @@ export class QuizComponent implements OnInit {
   currentQuestionIndex: number = 0;
   selectedAnswers: number[] = [];
   quizes: any[] = [];
+  isGenerated: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.isGenerated = params['isgenerated'] === 'true';
+    });
+
     this.quizes = quizData.quiz;
-    console.log(this.quizes);
-    this.questions = this.quizes[this.quizes.length - 1].questions;
-    console.log(this.quizes[this.quizes.length - 1]);
+    if(this.isGenerated){
+      this.questions = this.quizes[this.quizes.length - 1].questions;
+      console.log(this.isGenerated)
+    }
+    else{
+      const randomIdx = Math.floor(Math.random() * this.quizes.length)
+      this.questions = this.quizes[randomIdx].questions;
+      console.log(this.isGenerated)
+      console.log(randomIdx)
+    }
+    
     this.selectedAnswers = new Array(this.questions.length).fill(null);
   }
 
