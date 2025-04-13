@@ -8,6 +8,7 @@ import math
 from openai import OpenAI
 import os
 import ast
+import sympy
 
 app = Flask(__name__)
 
@@ -336,7 +337,6 @@ def signal_api_second_derivative():
     # 2. + => %2B
     return get_signal_second_derivative(equation)
 
-
 def get_signal(equation, t=np.linspace(-4, 5, 1000)):
     """Renvoie les données temporelles et d'amplitude d'un signal sous format JSON."""
     try:
@@ -376,6 +376,190 @@ def signal_api():
     equation = equation.replace("  ", " ")
     # 2. + => %2B
     return get_signal(equation)
+
+@app.route("/get_even_ofـsignal", methods=["GET"])
+@cross_origin()
+def get_even_signal():
+    equation = request.args.get("equation", "")
+    try:
+        # Time vector
+        t = np.linspace(-4, 5, 1000)
+
+        # Parse and evaluate original signal
+        prepared_eq = parse_equation(equation)
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Evaluate x(-t)
+        func_dict['t'] = -t
+        y_neg = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Even part: (x(t) + x(-t)) / 2
+        y_even = (y + y_neg) / 2
+
+        return jsonify({"time": t.tolist(), "amplitude": y_even.tolist()})
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
+
+
+@app.route("/get_odd_ofـsignal", methods=["GET"])
+@cross_origin()
+def get_odd_signal():
+    equation = request.args.get("equation", "")
+    try:
+        # Time vector
+        t = np.linspace(-4, 5, 1000)
+
+        # Parse and evaluate original signal
+        prepared_eq = parse_equation(equation)
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Evaluate x(-t)
+        func_dict['t'] = -t
+        y_neg = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Odd part: (x(t) - x(-t)) / 2
+        y_odd = (y - y_neg) / 2
+
+        return jsonify({"time": t.tolist(), "amplitude": y_odd.tolist()})
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
+
+
+@app.route("/get_fourier_transform", methods=["GET"])
+@cross_origin()
+def get_fourier_transform():
+    equation = request.args.get("equation", "")
+    try:
+        # Time vector (assume signal is defined over this interval)
+        t = np.linspace(-4, 5, 1000)
+
+        # Parse and evaluate original signal
+        prepared_eq = parse_equation(equation)
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Apply Fourier Transform
+        Y = np.fft.fftshift(np.fft.fft(y))
+        freq = np.fft.fftshift(np.fft.fftfreq(len(t), d=(t[1] - t[0])))
+
+        # Compute magnitude and phase
+        magnitude = np.abs(Y)
+        phase = np.angle(Y)
+
+        return jsonify({
+            "frequency": freq.tolist(),
+            "magnitude": magnitude.tolist(),
+            "phase": phase.tolist()
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
+
+@app.route("/get_fourier_series", methods=["GET"])
+@cross_origin()
+def get_fourier_series():
+    import numpy as np
+    import math
+    from flask import request, jsonify
+
+    # Define any special functions you support
+    def rect(t): return np.where(np.abs(t) <= 0.5, 1, 0)
+    def tri(t): return np.where(np.abs(t) <= 1, 1 - np.abs(t), 0)
+    def u(t): return np.where(t >= 0, 1, 0)
+    def r(t): return t * u(t)
+    def delta(t): return np.where(np.abs(t) < 1e-3, 1e3, 0)
+
+    equation = request.args.get("equation", "")
+    try:
+        # Define the signal period and sample time
+        T = 2 * np.pi  # You can allow users to set this
+        N = 20         # Number of Fourier coefficients
+        t = np.linspace(-T / 2, T / 2, 1000)
+
+        # Prepare equation environment
+        prepared_eq = equation.replace("^", "**")
+        func_dict = {
+            'rect': rect,
+            'tri': tri,
+            'u': u,
+            'r': r,
+            'delta': delta,
+            'δ': delta,
+            't': t,
+            'np': np,
+            'math': math,
+            'sin': np.sin,
+            'cos': np.cos,
+            'exp': np.exp,
+            'log': np.log
+        }
+        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
+
+        # Fourier Series coefficients a_n, b_n
+        a = []
+        b = []
+        for n in range(N + 1):
+            a_n = (2 / T) * np.trapz(y * np.cos(n * 2 * np.pi * t / T), t)
+            b_n = (2 / T) * np.trapz(y * np.sin(n * 2 * np.pi * t / T), t)
+            a.append(a_n)
+            b.append(b_n)
+
+        # Return results
+        return jsonify({
+            "a_n": a,
+            "b_n": b,
+            "period": T,
+            "message": "Fourier series coefficients computed"
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e), "equation": equation})
 
 # Run the Flask app
 if __name__ == "__main__":

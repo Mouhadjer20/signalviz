@@ -63,3 +63,9 @@ signalviz/
 ├── .gitignore                # Git ignore file
 ├── LICENSE                   # Project license (e.g., MIT)
 └── README.md                 # Main project README
+
+
+Some fitures:
+    1. say 'Yes' ==> logiciel detect word
+    2. detect person with wify
+    3. detect attack

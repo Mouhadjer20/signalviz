@@ -1,0 +1,76 @@
+/* Conteneur principal */
+.sandbox-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f4f4f9; /* Fond clair */
+  }
+  
+  /* Barre de saisie des signaux */
+  .signal-input {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .signal-input input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px; /* Largeur fixe pour l'input */
+  }
+  
+  .signal-input button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3F72AF; /* Couleur bleue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .signal-input button:hover {
+    background-color: #2a4f7a; /* Couleur bleue plus foncée au survol */
+  }
+  
+  /* Zone du graphe */
+  .chart-section {
+    width: 100%;
+    max-width: 1200px; /* Largeur maximale du graphe */
+    height: 70vh; /* Hauteur du graphe (70% de la hauteur de la vue) */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    padding: 20px;
+    margin-bottom: 20px; /* Espacement avec la description */
+  }
+  
+  /* Description */
+  .description {
+    max-width: 1200px; /* Largeur maximale pour la description */
+    text-align: left; /* Alignement du texte à gauche */
+    font-size: 16px;
+    color: #333; /* Couleur de texte sombre */
+  }
+  
+  .description p {
+    margin-bottom: 10px; /* Espacement entre les paragraphes */
+  }
+  
+  .description ul {
+    margin-top: 10px; /* Espacement avant la liste */
+    padding-left: 20px; /* Indentation de la liste */
+  }
+  
+  .description code {
+    background-color: #f4f4f9; /* Fond clair pour le code */
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+    

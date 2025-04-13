@@ -7,6 +7,7 @@ import { SignalsExamplsComponent } from './components/signals-exampls/signals-ex
 import { BasicsComponent } from './components/basics/basics.component';
 import { ResultComponent } from './components/result/result.component';
 import { SandboxComponent } from './components/sandbox/sandbox.component'
+import { FourierComponent } from './components/fourier/fourier.component';
 
 export const routes: Routes = [
     {path: "", redirectTo: "/home", pathMatch: 'full'},
@@ -16,6 +17,7 @@ export const routes: Routes = [
     {path: "signals", component: SignalsExamplsComponent, title: 'Examples'},
     {path: "basics", component: BasicsComponent, title: 'Basics'},
     {path: "result", component: ResultComponent, title: 'Result'},
-{path: "sandbox", component: SandboxComponent, title: 'Sandbox'},
+    {path: "sandbox", component: SandboxComponent, title: 'Sandbox'},
+    {path: "sandbox-fourier", component: FourierComponent, title: 'Fourier'},
     {path: "**", component: NotFoundComponent, title: '404 Not Found'}
 ];
