@@ -13,7 +13,7 @@
       />
       <button (click)="updateChart()">Visualize</button>
       <button (click)="fourierTransformChart()">Fourier Transorm</button>
-      <button (click)="fourierSerieChart()">Fourier Serie</button>
+      <button (click)="fourierSeriesChart()">Fourier Serie</button>
       <button (click)="clearChart()">Clear</button>
     </div>
   
@@ -23,9 +23,14 @@
         <section class="chart-section col">
           <div [chart]="chart" class="chart"></div>
         </section>
-
+      </div>
+      <div class="row gap-5">
         <section class="chart-section col">
           <div [chart]="chart_phase" class="chart"></div>
+        </section>
+
+        <section class="chart-section col">
+          <div [chart]="chart_magnitude" class="chart"></div>
         </section>
       </div>
     </div>

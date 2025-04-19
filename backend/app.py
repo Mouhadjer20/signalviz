@@ -213,7 +213,6 @@ def generate_quiz():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 def parse_equation(equation): 
     """
     Parse and prepare the equation for evaluation.
@@ -284,6 +283,7 @@ def get_signal_derivative(equation, t=np.linspace(-4, 5, 1000)):
 
     except Exception as e:
         return jsonify({"error": str(e), "equation": equation})
+
 @app.route("/get_signal_derivative", methods=["GET"])
 @cross_origin()
 def signal_api_derivative():
@@ -416,7 +416,6 @@ def get_even_signal():
     except Exception as e:
         return jsonify({"error": str(e), "equation": equation})
 
-
 @app.route("/get_odd_ofـsignal", methods=["GET"])
 @cross_origin()
 def get_odd_signal():
@@ -455,7 +454,6 @@ def get_odd_signal():
 
     except Exception as e:
         return jsonify({"error": str(e), "equation": equation})
-
 
 @app.route("/get_fourier_transform", methods=["GET"])
 @cross_origin()
@@ -501,65 +499,136 @@ def get_fourier_transform():
     except Exception as e:
         return jsonify({"error": str(e), "equation": equation})
 
+from sympy import symbols, Piecewise, Eq, And, sin, cos, exp, pi, sympify, Expr, integrate, sqrt, atan2, lambdify
+from sympy import N
+import re
+from json import JSONEncoder
+import numpy as np
+
+class SymPyJSONEncoder(JSONEncoder):
+    """Custom JSON encoder to handle SymPy objects."""
+    def default(self, obj):
+        if hasattr(obj, 'evalf'):
+            return float(N(obj))  # Convert SymPy numbers to float
+        elif isinstance(obj, (np.ndarray, np.generic)):
+            return obj.tolist()  # Convert NumPy arrays to lists
+        return super().default(obj)
+
+def parse_equation_to_sympy(equation: str, t: symbols) -> Expr:
+    """
+    Convert a user-friendly equation string into a SymPy expression.
+    Handles Rect, Tri, Delta, etc. and replaces them with Piecewise definitions.
+    
+    Args:
+        equation: User input string (e.g., "rect(t/2) + tri(t-1)")
+        t: SymPy symbol for time variable.
+        
+    Returns:
+        SymPy expression ready for symbolic computation.
+    """
+    # Define SymPy-compatible functions
+    def rect(x):
+        return Piecewise((1, And(x <= 0.5, x >= -0.5)), (0, True))
+    
+    def tri(x):
+        return Piecewise((1 - abs(x), abs(x) <= 1), (0, True))
+    
+    def u(x):
+        return Piecewise((1, x >= 0), (0, True))  # Unit step
+    
+    def r(x):
+        return Piecewise((x, x >= 0), (0, True))  # Ramp
+    
+    def delta(x):
+        return Piecewise((1, Eq(x, 0)), (0, True))  # Dirac delta (symbolic)
+    
+    # Replacements for SymPy compatibility
+    replacements = [
+        (r'\bRect\b', 'rect'),
+        (r'\bTri\b', 'tri'),
+        (r'\bU\b', 'u'),
+        (r'\bR\b', 'r'),
+        (r'\bDelta\b', 'delta'),
+        (r'\bδ\b', 'delta'),
+        (r'\bπ\b', 'pi'),
+        (r'\bpi\b', 'pi'),
+    ]
+    
+    # Apply replacements
+    for pattern, replacement in replacements:
+        equation = re.sub(pattern, replacement, equation, flags=re.IGNORECASE)
+    
+    # Fix implicit multiplication (e.g., "2t" -> "2*t")
+    equation = re.sub(r'(\d)([a-zA-Z])', r'\1*\2', equation)
+    equation = re.sub(r'([a-zA-Z])(\d)', r'\1*\2', equation)
+    
+    # Local dictionary for SymPy functions
+    sympy_funcs = {
+        'rect': rect,
+        'tri': tri,
+        'u': u,
+        'r': r,
+        'delta': delta,
+        'sin': sin,
+        'cos': cos,
+        'exp': exp,
+        'pi': pi,
+        't': t
+    }
+    
+    # Convert to SymPy expression
+    try:
+        expr = sympify(equation, locals=sympy_funcs)
+        return expr
+    except Exception as e:
+        raise ValueError(f"Failed to parse equation: {str(e)}")
+
 @app.route("/get_fourier_series", methods=["GET"])
 @cross_origin()
 def get_fourier_series():
-    import numpy as np
-    import math
-    from flask import request, jsonify
-
-    # Define any special functions you support
-    def rect(t): return np.where(np.abs(t) <= 0.5, 1, 0)
-    def tri(t): return np.where(np.abs(t) <= 1, 1 - np.abs(t), 0)
-    def u(t): return np.where(t >= 0, 1, 0)
-    def r(t): return t * u(t)
-    def delta(t): return np.where(np.abs(t) < 1e-3, 1e3, 0)
-
     equation = request.args.get("equation", "")
+    period = float(2 * math.pi) #float(request.args.get("period", 2 * math.pi))  # Default period = 2π
+    N_terms = int(request.args.get("N_terms", "10"))     # Number of harmonics
+        
     try:
-        # Define the signal period and sample time
-        T = 2 * np.pi  # You can allow users to set this
-        N = 20         # Number of Fourier coefficients
-        t = np.linspace(-T / 2, T / 2, 1000)
+        # Symbolic computation (using sympy)
+        t = sympy.symbols('t')
+        n = sympy.symbols('n')
+        
+        # Define signal functions (rect, tri, etc.)
+        signal_expr = parse_equation_to_sympy(equation, t)  # Implement this
 
-        # Prepare equation environment
-        prepared_eq = equation.replace("^", "**")
-        func_dict = {
-            'rect': rect,
-            'tri': tri,
-            'u': u,
-            'r': r,
-            'delta': delta,
-            'δ': delta,
-            't': t,
-            'np': np,
-            'math': math,
-            'sin': np.sin,
-            'cos': np.cos,
-            'exp': np.exp,
-            'log': np.log
+        # Compute coefficients (same as before)
+        a0 = (1 / period) * integrate(signal_expr, (t, -period/2, period/2))
+        an = (2 / period) * integrate(signal_expr * cos(2*pi*n*t/period), (t, -period/2, period/2))
+        bn = (2 / period) * integrate(signal_expr * sin(2*pi*n*t/period), (t, -period/2, period/2))
+        
+        # Simplify and convert to native Python types
+        a0_simp = float(N(a0))  # Force conversion to float
+        an_simp = [float(N(an.subs(n, i))) for i in range(1, N_terms+1)]
+        bn_simp = [float(N(bn.subs(n, i))) for i in range(1, N_terms+1)]
+        
+        # Reconstructed signal (numeric)
+        t_vals = np.linspace(-float(period), float(period), 1000)
+        reconstructed = a0_simp + sum(
+            an_simp[i] * np.cos(2*np.pi*(i+1)*t_vals/period) + 
+            bn_simp[i] * np.sin(2*np.pi*(i+1)*t_vals/period)
+            for i in range(N_terms)
+        )
+        
+        # Use custom encoder for JSON response
+        response = {
+            "a0": a0_simp,
+            "an": an_simp,
+            "bn": bn_simp,
+            "t": t_vals.tolist(),
+            "original_signal": lambdify(t, signal_expr, 'numpy')(t_vals).tolist(),
+            "reconstructed_signal": reconstructed.tolist()
         }
-        y = eval(prepared_eq, {"__builtins__": {}}, func_dict)
-
-        # Fourier Series coefficients a_n, b_n
-        a = []
-        b = []
-        for n in range(N + 1):
-            a_n = (2 / T) * np.trapz(y * np.cos(n * 2 * np.pi * t / T), t)
-            b_n = (2 / T) * np.trapz(y * np.sin(n * 2 * np.pi * t / T), t)
-            a.append(a_n)
-            b.append(b_n)
-
-        # Return results
-        return jsonify({
-            "a_n": a,
-            "b_n": b,
-            "period": T,
-            "message": "Fourier series coefficients computed"
-        })
-
+        return jsonify(response), 200, {'Content-Type': 'application/json; charset=utf-8'}
+    
     except Exception as e:
-        return jsonify({"error": str(e), "equation": equation})
+        return jsonify({"error": str(e), "equation": equation}), 400
 
 # Run the Flask app
 if __name__ == "__main__":
